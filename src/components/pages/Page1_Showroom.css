@@ -1,0 +1,209 @@
+.page1 {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.page1__overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Hero text ── */
+.page1__hero {
+  padding: 0 6vw;
+  margin-top: 4rem;
+  pointer-events: all;
+}
+
+.page1__eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  color: #0066b1;
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  animation: fadeUp 1s ease 0.3s both;
+}
+
+.page1__headline {
+  font-size: clamp(3rem, 8vw, 7rem);
+  font-weight: 200;
+  line-height: 1.0;
+  color: #fff;
+  margin: 0 0 1.5rem;
+  animation: fadeUp 1s ease 0.5s both;
+}
+.page1__headline--accent {
+  font-weight: 700;
+  background: linear-gradient(135deg, #0066b1, #00d4ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page1__sub {
+  font-size: 0.9rem;
+  line-height: 1.8;
+  color: #888;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 1s ease 0.7s both;
+}
+
+.page1__cta-row {
+  display: flex;
+  gap: 1rem;
+  animation: fadeUp 1s ease 0.9s both;
+}
+
+.btn-ignite {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, #0066b1, #003d75);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 0 0 transparent;
+}
+.btn-ignite:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,102,177,0.5);
+}
+.btn-ignite__icon { font-size: 1rem; }
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 4px;
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.btn-outline:hover {
+  border-color: #0066b1;
+  background: rgba(0,102,177,0.1);
+}
+
+/* ── Model switcher ── */
+.page1__model-switcher {
+  position: absolute;
+  right: 5vw;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: all;
+  animation: fadeLeft 1s ease 1s both;
+}
+.page1__switcher-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: #555;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.page1__model-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.75rem 1.25rem;
+  background: rgba(8,8,12,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 6px;
+  cursor: pointer;
+  color: #888;
+  text-align: left;
+  transition: all 0.3s;
+  backdrop-filter: blur(8px);
+}
+.page1__model-btn.active,
+.page1__model-btn:hover {
+  border-color: rgba(0,102,177,0.5);
+  color: #fff;
+  background: rgba(0,102,177,0.12);
+}
+.page1__model-name  { font-size: 0.8rem; font-weight: 500; }
+.page1__model-price { font-size: 0.65rem; color: #0066b1; margin-top: 2px; }
+
+/* ── Color picker ── */
+.page1__color-picker {
+  position: absolute;
+  bottom: 4rem;
+  left: 6vw;
+  display: flex;
+  gap: 0.75rem;
+  pointer-events: all;
+  animation: fadeUp 1s ease 1.2s both;
+}
+.page1__swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.page1__swatch.active {
+  border-color: #fff;
+  transform: scale(1.25);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.2);
+}
+.page1__swatch:hover { transform: scale(1.15); }
+
+/* ── M-Strip ── */
+.page1__m-strip {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  height: 4px;
+}
+.page1__m-stripe { flex: 1; }
+.page1__m-stripe--b  { background: #0066b1; }
+.page1__m-stripe--r  { background: #cc0000; }
+.page1__m-stripe--b2 { background: #0066b1; }
+
+/* ── Ignition flash ── */
+.page1__ignition-flash {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(255,170,0,0.25) 0%, transparent 70%);
+  animation: ignFlash 0.8s ease forwards;
+  pointer-events: none;
+  z-index: 20;
+}
+@keyframes ignFlash {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translate(30px, -50%); }
+  to   { opacity: 1; transform: translate(0, -50%); }
+}
