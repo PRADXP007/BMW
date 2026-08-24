@@ -1,22 +1,21 @@
-import { useEffect, useRef } from 'react';
 import { useStore } from '../../store/useStore';
 import './Navigation.css';
 
-const PAGES = [
-  { id: 0, label: 'Showroom',     icon: '◆' },
-  { id: 1, label: 'Configurator', icon: '⬡' },
-  { id: 2, label: 'Electric',     icon: '⚡' },
-  { id: 3, label: 'Cockpit',      icon: '◎' },
-  { id: 4, label: 'Aerodynamics', icon: '≋' },
-  { id: 5, label: 'Vault',        icon: '⬡' },
+const NAV_LINKS = [
+  { label: 'Showroom',     href: '#showroom'     },
+  { label: 'Configurator', href: '#configurator'  },
+  { label: 'Electric',     href: '#electric'      },
+  { label: 'Cockpit',      href: '#cockpit'       },
+  { label: 'Aerodynamics', href: '#aero'          },
+  { label: 'Vault',        href: '#vault'         },
 ];
 
-export default function Navigation({ scrollTo }) {
-  const { currentPage, cartItems, setCartOpen } = useStore();
+export default function Navigation() {
+  const { cartItems, setCartOpen } = useStore();
 
   return (
     <nav className="nav">
-      {/* BMW Wordmark */}
+      {/* BMW Logo */}
       <div className="nav__brand">
         <svg viewBox="0 0 200 200" className="nav__logo">
           <circle cx="100" cy="100" r="96" fill="none" stroke="#0066b1" strokeWidth="5"/>
@@ -30,26 +29,19 @@ export default function Navigation({ scrollTo }) {
         <span className="nav__wordmark">BMW</span>
       </div>
 
-      {/* Page links */}
+      {/* Links */}
       <ul className="nav__links">
-        {PAGES.map((p) => (
-          <li key={p.id} className={`nav__item ${currentPage === p.id ? 'nav__item--active' : ''}`}>
-            <button
-              className="nav__btn"
-              onClick={() => scrollTo(p.id)}
-            >
-              <span className="nav__icon">{p.icon}</span>
-              <span className="nav__label">{p.label}</span>
-            </button>
+        {NAV_LINKS.map((l) => (
+          <li key={l.href}>
+            <a href={l.href} className="nav__link">{l.label}</a>
           </li>
         ))}
       </ul>
 
       {/* Cart */}
       <button className="nav__cart" onClick={() => setCartOpen(true)}>
-        <svg viewBox="0 0 24 24" className="nav__cart-icon">
-          <path fill="none" stroke="currentColor" strokeWidth="1.5"
-            d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
+        <svg viewBox="0 0 24 24" className="nav__cart-icon" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/>
         </svg>
         {cartItems.length > 0 && (
           <span className="nav__cart-badge">{cartItems.length}</span>
