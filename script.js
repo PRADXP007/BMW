@@ -1,424 +1,372 @@
 document.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
-  // 1. Motion Preference Check
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let isReduced = reduceMotion.matches;
+  // 1. Motion Preference
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // 2. Lenis Setup & Sync
+  // 2. Lenis Smooth Scrolling Setup
   let lenis = null;
-  if (!isReduced && typeof Lenis !== 'undefined') {
+  if (!prefersReduced && typeof Lenis !== 'undefined') {
     lenis = new Lenis({
-      duration: 1.1,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      wheelMultiplier: 1.1,
     });
 
+    lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
-    lenis.on('scroll', ScrollTrigger.update);
   }
 
-  // Register ScrollTrigger
+  // 3. Ambient Cursor Glow Tracking
+  const cursorGlow = document.querySelector('.cursor-glow');
+  if (cursorGlow && !prefersReduced) {
+    window.addEventListener('pointermove', (e) => {
+      gsap.to(cursorGlow, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.5,
+        ease: 'power2.out',
+      });
+    });
+  }
+
+  // 4. GSAP & ScrollTrigger Animations
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
 
-    // DOM Elements
-    const heroTitle = document.querySelector('.hero-title');
-    const introCopy = document.querySelector('.intro-copy');
-    const heroCarImg = document.querySelector('.hero-car-img');
-    const splitLeft = document.querySelector('.splitframe-left');
-    const splitRight = document.querySelector('.splitframe-right');
-    const frameTwoImg = document.querySelector('.frame-two-img');
-    const skyImg = document.querySelector('.sky-img');
-    const backGarage = document.querySelector('.back-garage');
-    const backStack = document.querySelector('.back-stack');
-    const shade = document.querySelector('.shade');
-    const panelPower = document.querySelector('.story-panel-power');
-    const panelCockpit = document.querySelector('.story-panel-cockpit');
-    const sightsSlider = document.querySelector('.sights-slider');
-    const sightsControls = document.querySelector('.sights-controls');
+    const sceneLayers = document.querySelectorAll('.scene-layer');
+    const sections = document.querySelectorAll('.story-section');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const progressSteps = document.querySelectorAll('.progress-step');
 
-    // Master Timeline pinned over 3700px
-    const master = gsap.timeline({
-      scrollTrigger: {
-        trigger: '#cinema',
-        start: 'top top',
-        end: '+=3700',
-        scrub: isReduced ? true : 0.3,
-        pin: '.stage',
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          if (sightsControls) {
-            if (self.progress >= 0.96) {
-              sightsControls.classList.add('is-ready');
-            } else {
-              sightsControls.classList.remove('is-ready');
-            }
-          }
-        },
-      },
-    });
-
-    // Custom power-eased curve approximations (matching power^1.5 & power^1.55 curves)
-    // 1 unit on timeline = 1 pixel of scroll (0 to 3700)
-
-    // BEAT 1: 0 → 650 (Title & Intro Exit)
-    master.to(
-      heroTitle,
-      {
-        y: -210,
-        scale: 0.92,
-        opacity: 0,
-        ease: 'power2.out',
-        duration: 650,
-      },
-      0
-    );
-
-    master.to(
-      introCopy,
-      {
-        y: 90,
-        opacity: 0,
-        ease: 'power2.out',
-        duration: 520,
-      },
-      0
-    );
-
-    // BEAT 2: 560 → 1620 (Engine-Reveal Act)
-    // Hero car expands and lifts
-    master.fromTo(
-      heroCarImg,
-      { width: '67.2vw', bottom: '5vh', y: 0, scale: 1.02, opacity: 1 },
-      {
-        width: '105vw',
-        bottom: '-8vh',
-        y: -760,
-        scale: 1.48,
-        opacity: 0,
-        ease: 'power2.inOut',
-        duration: 1060, // 560 to 1620
-      },
-      560
-    );
-
-    // Splitframes part symmetrically
-    master.fromTo(
-      splitLeft,
-      { x: '-50%', y: 0, scale: 1, opacity: 1 },
-      {
-        x: '-96vw',
-        y: -180,
-        scale: 1.74,
-        opacity: 0,
-        ease: 'power2.out',
-        duration: 940, // 600 to 1540
-      },
-      600
-    );
-
-    master.fromTo(
-      splitRight,
-      { x: '-50%', y: 0, scale: 1, opacity: 1 },
-      {
-        x: '46vw',
-        y: -180,
-        scale: 1.74,
-        opacity: 0,
-        ease: 'power2.out',
-        duration: 940, // 600 to 1540
-      },
-      600
-    );
-
-    // Frame Two (Cockpit) reveal
-    master.fromTo(
-      frameTwoImg,
-      { opacity: 0, scale: 1.06 },
-      {
-        opacity: 1,
-        scale: 1.0,
-        ease: 'power2.out',
-        duration: 550, // 1300 to 1850
-      },
-      1300
-    );
-
-    // Back layer filters & shade gradient tint
-    const shadeProxy = { top: 0, mid: 0, bottom: 0, blur: 0, bright: 1 };
-    master.to(
-      shadeProxy,
-      {
-        top: 0.465,
-        mid: 0.42,
-        bottom: 0.51,
-        blur: 14,
-        bright: 0.745,
-        duration: 640, // 600 to 1240
-        ease: 'power2.out',
-        onUpdate: () => {
-          document.documentElement.style.setProperty('--shade-top', shadeProxy.top.toFixed(3));
-          document.documentElement.style.setProperty('--shade-mid', shadeProxy.mid.toFixed(3));
-          document.documentElement.style.setProperty('--shade-bottom', shadeProxy.bottom.toFixed(3));
-          if (skyImg) skyImg.style.filter = `blur(${shadeProxy.blur}px) brightness(${shadeProxy.bright})`;
-          if (backGarage) backGarage.style.filter = `blur(${shadeProxy.blur * 0.4}px) brightness(${shadeProxy.bright})`;
-        },
-      },
-      600
-    );
-
-    // Power panel enter (680 → 960) and exit (1280 → 1620)
-    master.fromTo(
-      panelPower,
-      { opacity: 0, y: 'calc(-50% + 58px)' },
-      {
-        opacity: 1,
-        y: 'calc(-50% + 0px)',
-        duration: 280,
-        ease: 'power2.out',
-      },
-      680
-    );
-
-    master.to(
-      panelPower,
-      {
-        opacity: 0,
-        y: 'calc(-50% - 86px)',
-        duration: 340,
-        ease: 'power2.in',
-      },
-      1280
-    );
-
-    // BEAT 3: 1760 → 2700 (Cockpit Act)
-    // Garage saturation boost
-    const garageProxy = { sat: 1 };
-    master.to(
-      garageProxy,
-      {
-        sat: 1.18,
-        duration: 640,
-        ease: 'power2.out',
-        onUpdate: () => {
-          if (backGarage) {
-            backGarage.style.filter = `saturate(${garageProxy.sat.toFixed(2)})`;
-          }
-        },
-      },
-      1760
-    );
-
-    // Cockpit panel enter (1760 → 2140) and exit (2500 → 2700)
-    master.fromTo(
-      panelCockpit,
-      { opacity: 0, y: 'calc(-50% + 58px)' },
-      {
-        opacity: 1,
-        y: 'calc(-50% + 0px)',
-        duration: 380,
-        ease: 'power2.out',
-      },
-      1760
-    );
-
-    master.to(
-      panelCockpit,
-      {
-        opacity: 0,
-        y: 'calc(-50% - 86px)',
-        duration: 200,
-        ease: 'power2.in',
-      },
-      2500
-    );
-
-    // Frame Two (Cockpit) exit
-    master.to(
-      frameTwoImg,
-      {
-        opacity: 0,
-        scale: 0.94,
-        duration: 300,
-        ease: 'power2.in',
-      },
-      2500
-    );
-
-    // BEAT 4: 2760 → 3560 (Spec Cards Entrance) & Back zoom
-    master.to(
-      backStack,
-      {
-        scale: 1.15,
-        duration: 1200, // 2400 to 3600
-        ease: 'power1.inOut',
-      },
-      2400
-    );
-
-    master.set(
-      sightsSlider,
-      {
-        visibility: 'visible',
-      },
-      2740
-    );
-
-    master.fromTo(
-      sightsSlider,
-      {
-        x: '420vw',
-        opacity: 0,
-        scale: 1.25,
-      },
-      {
-        x: '0vw',
-        opacity: 1,
-        scale: 1.0,
-        duration: 800, // 2760 to 3560
-        ease: 'power3.out',
-      },
-      2760
-    );
-
-    // BEAT 5: 3360 → 3660 (Controls Fade)
-    master.fromTo(
-      sightsControls,
-      { opacity: 0 },
-      {
-        opacity: 1,
-        duration: 300, // 3360 to 3660
-        ease: 'power2.out',
-      },
-      3360
-    );
-
-    // 4. Pointer Parallax (gsap.quickTo)
-    if (!isReduced) {
-      const setBackX = gsap.quickTo(backStack, 'x', { duration: 0.8, ease: 'power3.out' });
-      const setBackY = gsap.quickTo(backStack, 'y', { duration: 0.8, ease: 'power3.out' });
-      const setHeroX = gsap.quickTo(heroCarImg, 'x', { duration: 0.6, ease: 'power2.out' });
-      const setHeroY = gsap.quickTo(heroCarImg, 'y', { duration: 0.6, ease: 'power2.out' });
-
-      window.addEventListener(
-        'pointermove',
-        (e) => {
-          const normX = (e.clientX / window.innerWidth - 0.5) * 2;
-          const normY = (e.clientY / window.innerHeight - 0.5) * 2;
-          setBackX(normX * 18);
-          setBackY(normY * 14);
-          setHeroX(normX * -12);
-          setHeroY(normY * -8);
-        },
-        { passive: true }
-      );
-    }
-  }
-
-  // 5. Infinite Spec-Card Slider Logic
-  const track = document.querySelector('.sights-track');
-  const cards = document.querySelectorAll('.sight-card');
-  const prevBtn = document.querySelector('.sight-prev');
-  const nextBtn = document.querySelector('.sight-next');
-
-  let activeSight = 5; // Middle set start
-  let isSliderAnimating = false;
-
-  function getStepWidth() {
-    if (!cards.length || !track) return 400;
-    const cardRect = cards[0].getBoundingClientRect();
-    const style = window.getComputedStyle(track);
-    const gap = parseFloat(style.gap) || 20;
-    return cardRect.width + gap;
-  }
-
-  function updateSlider(animate = true) {
-    if (!track) return;
-    const step = getStepWidth();
-    const targetX = -(activeSight * step);
-
-    if (!animate) {
-      gsap.set(track, { x: targetX });
-      return;
-    }
-
-    isSliderAnimating = true;
-    gsap.to(track, {
-      x: targetX,
-      duration: 0.64,
-      ease: 'power3.out',
-      onComplete: () => {
-        isSliderAnimating = false;
-        // Instant normalization jump
-        if (activeSight >= 10) {
-          activeSight -= 5;
-          gsap.set(track, { x: -(activeSight * getStepWidth()) });
-        } else if (activeSight < 5) {
-          activeSight += 5;
-          gsap.set(track, { x: -(activeSight * getStepWidth()) });
+    // Function to switch active scene layer & navigation
+    function activateSection(index) {
+      sceneLayers.forEach((layer, i) => {
+        if (i === index) {
+          layer.classList.add('active');
+          gsap.fromTo(layer.querySelector('.scene-img'), { scale: 1.06 }, { scale: 1.0, duration: 1.2, ease: 'power2.out' });
+        } else if (index < sceneLayers.length) {
+          layer.classList.remove('active');
         }
-      },
-    });
-  }
+      });
 
-  if (nextBtn) {
-    nextBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isSliderAnimating) return;
-      activeSight++;
-      updateSlider(true);
-    });
-  }
+      navLinks.forEach((link, i) => {
+        if (i === index) link.classList.add('active');
+        else link.classList.remove('active');
+      });
 
-  if (prevBtn) {
-    prevBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (isSliderAnimating) return;
-      activeSight--;
-      updateSlider(true);
-    });
-  }
+      progressSteps.forEach((step, i) => {
+        if (i === index) step.classList.add('active');
+        else step.classList.remove('active');
+      });
+    }
 
-  // Card clicks & keyboard support
-  cards.forEach((card, idx) => {
-    card.addEventListener('click', () => {
-      activeSight = idx;
-      updateSlider(true);
+    // Story Section 1: Hero
+    ScrollTrigger.create({
+      trigger: '#section-hero',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      onEnter: () => activateSection(0),
+      onEnterBack: () => activateSection(0),
     });
 
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
+    gsap.fromTo(
+      '.hero-card-left',
+      { x: -120, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#section-hero',
+          start: 'top 70%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    gsap.fromTo(
+      '.hero-card-right',
+      { x: 120, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 0.9,
+        ease: 'power3.out',
+        delay: 0.15,
+        scrollTrigger: {
+          trigger: '#section-hero',
+          start: 'top 70%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    // Story Section 2: Profile (Side View)
+    ScrollTrigger.create({
+      trigger: '#section-profile',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      onEnter: () => activateSection(1),
+      onEnterBack: () => activateSection(1),
+    });
+
+    gsap.fromTo(
+      '.profile-card-left',
+      { x: -140, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'back.out(1.2)',
+        scrollTrigger: {
+          trigger: '#section-profile',
+          start: 'top 65%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    gsap.fromTo(
+      '.profile-card-right',
+      { x: 140, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'back.out(1.2)',
+        delay: 0.2,
+        scrollTrigger: {
+          trigger: '#section-profile',
+          start: 'top 65%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    // Story Section 3: Rear Dynamics (Rear View)
+    ScrollTrigger.create({
+      trigger: '#section-rear',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      onEnter: () => activateSection(2),
+      onEnterBack: () => activateSection(2),
+    });
+
+    gsap.fromTo(
+      '.rear-card-left',
+      { x: -140, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#section-rear',
+          start: 'top 65%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    gsap.fromTo(
+      '.rear-card-right',
+      { x: 140, opacity: 0 },
+      {
+        x: 0,
+        opacity: 1,
+        duration: 1,
+        ease: 'power3.out',
+        delay: 0.2,
+        scrollTrigger: {
+          trigger: '#section-rear',
+          start: 'top 65%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+
+    // Story Section 4: Technical Matrix
+    ScrollTrigger.create({
+      trigger: '#section-specs',
+      start: 'top 60%',
+      end: 'bottom 60%',
+      onEnter: () => activateSection(3),
+      onEnterBack: () => activateSection(3),
+    });
+
+    gsap.fromTo(
+      '.spec-card',
+      { y: 50, opacity: 0 },
+      {
+        y: 0,
+        opacity: 1,
+        duration: 0.7,
+        stagger: 0.12,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '.specs-grid',
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+        },
+      }
+    );
+
+    // Smooth Navigation Links Click
+    navLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
         e.preventDefault();
-        activeSight = idx;
-        updateSlider(true);
-      }
+        const targetId = link.getAttribute('href');
+        const targetElem = document.querySelector(targetId);
+        if (targetElem) {
+          if (lenis) {
+            lenis.scrollTo(targetElem, { duration: 1.4 });
+          } else {
+            targetElem.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
     });
-  });
 
-  // Note button interaction
-  const noteBtn = document.querySelector('.note-button');
-  if (noteBtn) {
-    noteBtn.addEventListener('click', () => {
-      if (lenis) {
-        lenis.scrollTo(3700, { duration: 1.5 });
-      } else {
-        window.scrollTo({ top: 3700, behavior: 'smooth' });
-      }
+    // Progress Tracker Steps Click
+    progressSteps.forEach((step, idx) => {
+      step.addEventListener('click', () => {
+        if (sections[idx]) {
+          if (lenis) {
+            lenis.scrollTo(sections[idx], { duration: 1.4 });
+          } else {
+            sections[idx].scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
     });
   }
 
-  // Resize handler
-  window.addEventListener('resize', () => {
-    updateSlider(false);
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.refresh();
+  // 5. Interactive Web Audio Engine Rev Simulator
+  let audioCtx = null;
+  let isRevving = false;
+  let rpmInterval = null;
+  const rpmCounter = document.getElementById('rpmCounter');
+  const revBtn = document.getElementById('revEngineBtn');
+  const soundToggle = document.getElementById('soundToggle');
+
+  function initAudio() {
+    if (!audioCtx) {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playS58EngineTone(targetRpm) {
+    initAudio();
+    if (!audioCtx) return;
+
+    const baseFreq = 50 + (targetRpm / 7200) * 180; // S58 I6 frequency curve
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const subOsc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    osc1.type = 'sawtooth';
+    osc1.frequency.setValueAtTime(baseFreq, audioCtx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, audioCtx.currentTime + 0.5);
+
+    osc2.type = 'triangle';
+    osc2.frequency.setValueAtTime(baseFreq * 1.01, audioCtx.currentTime);
+    osc2.frequency.exponentialRampToValueAtTime(baseFreq * 1.51, audioCtx.currentTime + 0.5);
+
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(baseFreq * 0.5, audioCtx.currentTime);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800 + (targetRpm / 7200) * 2400, audioCtx.currentTime);
+
+    gainNode.gain.setValueAtTime(0.01, audioCtx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.25, audioCtx.currentTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.7);
+
+    osc1.connect(filter);
+    osc2.connect(filter);
+    subOsc.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    osc1.start();
+    osc2.start();
+    subOsc.start();
+
+    osc1.stop(audioCtx.currentTime + 0.75);
+    osc2.stop(audioCtx.currentTime + 0.75);
+    subOsc.stop(audioCtx.currentTime + 0.75);
+  }
+
+  function startRev() {
+    if (isRevving) return;
+    isRevving = true;
+    let curRpm = 900;
+    const targetRpm = 6800 + Math.floor(Math.random() * 400);
+
+    playS58EngineTone(targetRpm);
+
+    clearInterval(rpmInterval);
+    rpmInterval = setInterval(() => {
+      if (curRpm < targetRpm) {
+        curRpm += 380;
+        if (rpmCounter) rpmCounter.textContent = Math.min(curRpm, targetRpm);
+      } else {
+        clearInterval(rpmInterval);
+        setTimeout(() => {
+          const dropInterval = setInterval(() => {
+            if (curRpm > 900) {
+              curRpm -= 240;
+              if (rpmCounter) rpmCounter.textContent = Math.max(curRpm, 900);
+            } else {
+              clearInterval(dropInterval);
+              isRevving = false;
+            }
+          }, 30);
+        }, 300);
+      }
+    }, 20);
+  }
+
+  if (revBtn) {
+    revBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      startRev();
+    });
+  }
+
+  if (soundToggle) {
+    soundToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      startRev();
+    });
+  }
+
+  // Spacebar rev engine listener
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && e.target === document.body) {
+      e.preventDefault();
+      startRev();
     }
   });
 
-  // Initialize slider position
-  updateSlider(false);
+  // Mode tag interactivity
+  const modeTags = document.querySelectorAll('.mode-tag');
+  modeTags.forEach((tag) => {
+    tag.addEventListener('click', () => {
+      modeTags.forEach((t) => t.classList.remove('active'));
+      tag.classList.add('active');
+    });
+  });
 });
