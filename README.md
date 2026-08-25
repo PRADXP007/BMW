@@ -1,16 +1,22 @@
-# React + Vite
+# BMW M4 — M4 Unbroken Showcase
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Cinematic scroll-driven showcase experience for the BMW M4 Coupe, built with GSAP 3.12 (ScrollTrigger) and Lenis smooth scrolling.
 
-Currently, two official plugins are available:
+## 🚀 Features
+- **GSAP ScrollTrigger Timeline:** 3700px scrubbed choreography revealing powertrain, splitframes, curved display cockpit, and performance specs.
+- **Lenis Smooth Scroll:** Inertia-driven buttery scrolling synced with GSAP.
+- **Infinite Spec Carousel:** Seamless 15-card looping carousel with instant normalization and keyboard navigation.
+- **Pointer Parallax:** Smooth multi-layer depth response using `gsap.quickTo()`.
+- **Fully Responsive & Accessible:** Fluid breakpoints (`1500px`, `1100px`, `640px`) and `prefers-reduced-motion` compliance.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🛠 Stack
+- HTML5
+- CSS3 (Vanilla + CSS Custom Properties)
+- JavaScript (ES6+)
+- [GSAP 3.12](https://greensock.com/gsap/) (Core + ScrollTrigger)
+- [Lenis 1.1](https://lenis.darkroom.engineering/)
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## 🏎 Trims & Figures
+- **M4 Coupe (Manual, RWD):** 473 hp · 406 lb-ft · 0-60 in 4.1s
+- **M4 Competition (RWD):** 503 hp · 479 lb-ft · 0-60 in 3.8s
+- **M4 Competition xDrive:** 523 hp · 479 lb-ft · 0-60 in 3.4s

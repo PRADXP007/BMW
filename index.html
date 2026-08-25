@@ -1,22 +1,187 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/bmw-icon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="BMW — The Ultimate Driving Machine. Explore the 2025 BMW lineup with an immersive 3D digital experience. Configure, customize and order your perfect BMW." />
-    <meta name="theme-color" content="#050507" />
-    <meta property="og:title" content="BMW — 3D Digital Experience" />
-    <meta property="og:description" content="The Ultimate Driving Machine. Configure your BMW in an award-winning 3D showroom." />
-    <meta property="og:type" content="website" />
-    <title>BMW — The Ultimate Driving Machine | 3D Experience</title>
-    <style>
-      /* Critical CSS to prevent FOUC */
-      body { background: #050507; margin: 0; }
-    </style>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BMW M4 — M4 Unbroken</title>
+  <meta name="description" content="Cinematic scroll-driven showcase for the 2026 BMW M4 Coupe. S58 Twin-Turbo Inline-Six, 473–523 HP, unbroken performance lineage." />
+  <link rel="icon" href="data:," />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="site-shell">
+    <section class="cinema-scroll" id="cinema" aria-label="M4 cinematic scroll story">
+      <div class="stage">
+        <div class="world">
+          <img class="scene-img sky-img" src="assets/images/sky.png" alt="" />
+          <header class="site-header" aria-label="Primary navigation">
+            <a class="site-logo" href="#cinema">M4 Unbroken</a>
+            <nav class="site-nav" aria-label="Main menu">
+              <a href="#cinema">Intro</a>
+              <a href="#power">Power</a>
+              <a href="#cockpit">Cockpit</a>
+              <a href="#specs">Specs</a>
+            </nav>
+            <button class="language-switcher" aria-label="Change trim" type="button">
+              <span>M4</span>
+              <span aria-hidden="true">⌄</span>
+            </button>
+          </header>
+          <div class="back-stack">
+            <img class="scene-img back-img back-glow" src="assets/images/glow.png" alt="" />
+            <section class="sights-slider" aria-label="M4 spec highlights slider">
+              <div class="sights-track">
+                <!-- Set 1 (Clone Before) -->
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open S58 Engine card">
+                  <span class="sight-kicker">Powertrain</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>S58 Twin-Turbo I6</h3>
+                  <p>A 3.0-liter inline-six with twin-scroll turbos, the beating heart of every M4.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Peak Output card">
+                  <span class="sight-kicker">Output</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>523 HP</h3>
+                  <p>Competition xDrive tops the range — the most power an M4 has ever put down.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Adaptive Chassis card">
+                  <span class="sight-kicker">Chassis</span>
+                  <img class="sight-pin" src="assets/icons/icon-chassis.png" alt="" />
+                  <h3>Adaptive M Suspension</h3>
+                  <p>Electronically controlled dampers tuned for track precision and daily comfort.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Cockpit card">
+                  <span class="sight-kicker">Interior</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>Curved Display</h3>
+                  <p>A 14.9-inch touchscreen and 12.3-inch cluster wrapped into one curved housing.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Heritage card">
+                  <span class="sight-kicker">Lineage</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>Six Generations</h3>
+                  <p>From the E30 M3 to today's G82, an unbroken line of BMW's performance coupes.</p>
+                </article>
+
+                <!-- Set 2 (Active Middle Set) -->
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open S58 Engine card">
+                  <span class="sight-kicker">Powertrain</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>S58 Twin-Turbo I6</h3>
+                  <p>A 3.0-liter inline-six with twin-scroll turbos, the beating heart of every M4.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Peak Output card">
+                  <span class="sight-kicker">Output</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>523 HP</h3>
+                  <p>Competition xDrive tops the range — the most power an M4 has ever put down.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Adaptive Chassis card">
+                  <span class="sight-kicker">Chassis</span>
+                  <img class="sight-pin" src="assets/icons/icon-chassis.png" alt="" />
+                  <h3>Adaptive M Suspension</h3>
+                  <p>Electronically controlled dampers tuned for track precision and daily comfort.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Cockpit card">
+                  <span class="sight-kicker">Interior</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>Curved Display</h3>
+                  <p>A 14.9-inch touchscreen and 12.3-inch cluster wrapped into one curved housing.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Heritage card">
+                  <span class="sight-kicker">Lineage</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>Six Generations</h3>
+                  <p>From the E30 M3 to today's G82, an unbroken line of BMW's performance coupes.</p>
+                </article>
+
+                <!-- Set 3 (Clone After) -->
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open S58 Engine card">
+                  <span class="sight-kicker">Powertrain</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>S58 Twin-Turbo I6</h3>
+                  <p>A 3.0-liter inline-six with twin-scroll turbos, the beating heart of every M4.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Peak Output card">
+                  <span class="sight-kicker">Output</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>523 HP</h3>
+                  <p>Competition xDrive tops the range — the most power an M4 has ever put down.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Adaptive Chassis card">
+                  <span class="sight-kicker">Chassis</span>
+                  <img class="sight-pin" src="assets/icons/icon-chassis.png" alt="" />
+                  <h3>Adaptive M Suspension</h3>
+                  <p>Electronically controlled dampers tuned for track precision and daily comfort.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Cockpit card">
+                  <span class="sight-kicker">Interior</span>
+                  <img class="sight-pin" src="assets/icons/icon-engine.png" alt="" />
+                  <h3>Curved Display</h3>
+                  <p>A 14.9-inch touchscreen and 12.3-inch cluster wrapped into one curved housing.</p>
+                </article>
+                <article class="sight-card" tabindex="0" role="button" aria-label="Open Heritage card">
+                  <span class="sight-kicker">Lineage</span>
+                  <img class="sight-pin" src="assets/icons/icon-power.png" alt="" />
+                  <h3>Six Generations</h3>
+                  <p>From the E30 M3 to today's G82, an unbroken line of BMW's performance coupes.</p>
+                </article>
+              </div>
+            </section>
+            <img class="scene-img back-img back-garage" src="assets/images/garage.png" alt="" />
+          </div>
+          <div class="sights-controls" aria-label="Slider controls">
+            <button class="sight-nav sight-prev" aria-label="Previous spec" type="button">←</button>
+            <button class="sight-nav sight-next" aria-label="Next spec" type="button">→</button>
+          </div>
+          <h1 class="hero-title">M4</h1>
+          <img class="scene-img splitframe-img splitframe-left" src="assets/images/split-left.png" alt="" />
+          <img class="scene-img splitframe-img splitframe-right" src="assets/images/split-right.png" alt="" />
+          <img class="scene-img hero-car-img" src="assets/images/hero-car.png" alt="" />
+          <img class="scene-img frame-two-img" src="assets/images/cockpit.png" alt="" />
+          <div class="shade"></div>
+        </div>
+        <section class="intro-copy" aria-label="M4 overview">
+          <p>A twin-turbo inline-six, three transmissions, and one unmistakable silhouette — the M4 is BMW's argument for the driver's car.</p>
+          <div class="hero-tags" aria-label="M4 highlights">
+            <span>S58 Inline-Six</span>
+            <span>473–523 HP</span>
+            <span>RWD or xDrive</span>
+          </div>
+        </section>
+        <section class="story-panel story-panel-power" id="power" aria-label="Engine and power details">
+          <h2>The engine is the argument.</h2>
+          <p>The S58's twin-turbo inline-six climbs from 473 to 523 horsepower depending on trim, wrapped in a chassis tuned to put every bit of it down.</p>
+          <dl class="facts">
+            <div>
+              <dt>523</dt>
+              <dd>Peak horsepower, Competition xDrive</dd>
+            </div>
+            <div>
+              <dt>3.4s</dt>
+              <dd>0-60 mph, quickest configuration</dd>
+            </div>
+          </dl>
+        </section>
+        <section class="story-panel story-panel-cockpit" id="cockpit" aria-label="Cockpit details">
+          <h2>The cockpit keeps you close to it.</h2>
+          <p>Curved glass, three pedals or none, and an interior built around the driver rather than the passenger.</p>
+          <button class="note-button" type="button">
+            <span aria-hidden="true">↗</span>
+            <span>Open cockpit notes</span>
+          </button>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <!-- Libraries: GSAP, ScrollTrigger, Lenis -->
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+</body>
 </html>
