@@ -12,17 +12,17 @@ export default {
           green: '#3d5a3e',
           light: '#f5f3ef',
           cream: '#faf8f5',
-        },
+        }
       },
       fontFamily: {
         'helvetica-neue': ['"Helvetica Neue Light"', 'Helvetica', 'Arial', 'sans-serif'],
         'playfair': ['"Playfair Display"', 'serif'],
-        'oswald': ['Oswald', 'sans-serif'],
-        'montserrat': ['Montserrat', 'sans-serif'],
+        'oswald': ['"Oswald"', 'sans-serif'],
+        'montserrat': ['"Montserrat"', 'sans-serif'],
         'roboto-slab': ['"Roboto Slab"', 'serif'],
-        'raleway': ['Raleway', 'sans-serif'],
-      },
+        'raleway': ['"Raleway"', 'sans-serif'],
+      }
     },
   },
   plugins: [],
-};
+}
