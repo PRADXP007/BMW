@@ -1,22 +1,57 @@
-# BMW M4 — M4 Unbroken Showcase
+# BMW M-PROJECT // 01 — EXPERIMENTAL EDITORIAL WEB EXPERIENCE
 
-Cinematic scroll-driven showcase experience for the BMW M4 Coupe, built with GSAP 3.12 (ScrollTrigger) and Lenis smooth scrolling.
+A brutalist, high-performance automotive editorial web experience for the **BMW M-PROJECT // 01**, engineered with **100% design fidelity** based on Google Stitch design tokens and screen specifications.
 
-## 🚀 Features
-- **GSAP ScrollTrigger Timeline:** 3700px scrubbed choreography revealing powertrain, splitframes, curved display cockpit, and performance specs.
-- **Lenis Smooth Scroll:** Inertia-driven buttery scrolling synced with GSAP.
-- **Infinite Spec Carousel:** Seamless 15-card looping carousel with instant normalization and keyboard navigation.
-- **Pointer Parallax:** Smooth multi-layer depth response using `gsap.quickTo()`.
-- **Fully Responsive & Accessible:** Fluid breakpoints (`1500px`, `1100px`, `640px`) and `prefers-reduced-motion` compliance.
+---
 
-## 🛠 Stack
-- HTML5
-- CSS3 (Vanilla + CSS Custom Properties)
-- JavaScript (ES6+)
-- [GSAP 3.12](https://greensock.com/gsap/) (Core + ScrollTrigger)
-- [Lenis 1.1](https://lenis.darkroom.engineering/)
+## ⚡ Tech Stack & Architecture
 
-## 🏎 Trims & Figures
-- **M4 Coupe (Manual, RWD):** 473 hp · 406 lb-ft · 0-60 in 4.1s
-- **M4 Competition (RWD):** 503 hp · 479 lb-ft · 0-60 in 3.8s
-- **M4 Competition xDrive:** 523 hp · 479 lb-ft · 0-60 in 3.4s
+- **Core Framework**: React 18 + TypeScript + Vite
+- **Styling**: Tailwind CSS + Custom CSS Variables + Zero-Radii Brutalist Design System
+- **Smooth Momentum Physics**: `@studio-freight/lenis` bound directly to the GSAP Ticker cycle (`lenis.raf(time * 1000)`)
+- **ScrollTrigger & Pinning Engine**: `gsap` + `gsap/ScrollTrigger`
+- **Kinetic Typography Masking**: `split-type` + `gsap.fromTo`
+- **360° Photometric Turntable Sequencer**: HTML5 `<canvas>` rendering 72 in-memory cached frames via `requestAnimationFrame`
+- **Spatial Audio Engine**: Procedural Web Audio API + `howler` with spatial stereo panning and twin-turbo V8 throttle rev synthesis
+- **State Store**: `zustand`
+
+---
+
+## 🏎️ Screen & Feature Matrix
+
+1. **Preloader Screen**: SplitType kinetic typography (`PRECISION`, `CHAOS`, `PURITY`, `MANIAC`), live 360° memory frame cache buffer tracker (`0% -> 100%`), CRT laser scanline, and sub-bass acoustical drop on enter.
+2. **Chassis Hero (`#chassis-view`)**: Pinned ScrollTrigger spec synchronization with suspended carbon-fiber monocoque, monumental flanking `BMW 01` split watermarks, and real-time telemetry counter highlights.
+3. **Showroom (`#showroom`)**: Dihedral raised-door studio view with interactive `IGNITE ENGINE SOUND 🔊` button, twin-turbo V8 throttle rev loop (1,150 -> 12,000 RPM redline scream), spatial panning, and live RPM tachometer bar.
+4. **Architectural Pillars & Deep-Dive Modals (`#configurator`)**:
+   - **`POWER` / `STRENGTH`**: Autoclave carbon monocoque rear subframe & heat-blued titanium equal-length headers.
+   - **`ORIGIN`**: 1976 24 Hours of Le Mans 3.0 CSL Batmobile heritage collage & log.
+   - **`BEAUTY`**: Front fascia macro and rear aerodynamic ground-effects tunnel.
+   - **`ASYLUM`**: Direct-bolt Alcantara bucket seat apex mount & open-gated 6AL-4V titanium shifter.
+   - **`OBSESSION`**: Analog 3-pod cluster & 7075-T6 billet aluminum pedal box.
+5. **360° Canvas Frame Scrubber (`#studio-view`)**: ScrollTrigger-driven turntable scrub mapped from `0.0 -> 1.0`, interactive manual drag with velocity damping, and photometric lighting switcher (`AMBER/CYAN`, `HIGH-KEY`, `VOID`).
+6. **Mission Editorial (`#manifesto-view`)**: 50/50 split screen with **sticky 100vh left cockpit column** and naturally scrolling right editorial canvas with SplitType reveals.
+7. **Typographic Manifesto**: `DESCEND INTO MADNESS WITH YOUR BMW 01` with target reticle and rising bottom car mask.
+8. **Skunkworks Commission Studio**: Custom chassis allocation protocol (`MN-SKW-01-XXXX`), aerodynamic finish picker, downforce package tier, powertrain calibration, pilot designation, and printable build certificate export.
+
+---
+
+## 🛠️ Development & Running Locally
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+---
+
+## 📄 License & Attribution
+Designed for BMW M Skunkworks conceptual exploration. Ingested via Google Stitch MCP.

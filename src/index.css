@@ -2,43 +2,109 @@
 @tailwind components;
 @tailwind utilities;
 
-@keyframes fade-up {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
+:root {
+  --color-m-orange: #E4492E;
+  --color-carbon-black: #0D0D0D;
+  --color-cyclorama-gray: #EBEBEB;
+  --color-panel-white: #F5F5F7;
+  --color-border-subtle: #D4D4D8;
+  --font-display: "Anton", "PP Neue Montreal", "Neue Haas Grotesk Display Pro", -apple-system, sans-serif;
+  --font-mono: "Courier Prime", "Geist Mono", "Space Mono", monospace;
+  --font-italic-spec: "Courier Prime", "Editorial New Italic", "Druk Wide Italic", monospace;
 }
 
-@keyframes fade-down {
-  from { opacity: 0; transform: translateY(-12px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Material Symbols configuration */
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-.animate-fade-up {
-  animation: fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+.material-symbols-outlined.fill-icon {
+  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
 }
 
-.animate-fade-down {
-  animation: fade-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.stagger-1 { animation-delay: 0ms; }
-.stagger-2 { animation-delay: 120ms; }
-.stagger-3 { animation-delay: 240ms; }
-.stagger-4 { animation-delay: 360ms; }
-.stagger-5 { animation-delay: 480ms; }
-.stagger-6 { animation-delay: 600ms; }
-
+/* Zero Radii Brutalist Defaults */
 * {
-  margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: #0D0D0D;
+}
+::-webkit-scrollbar-thumb {
+  background: #353535;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #E4492E;
 }
 
-body {
-  font-family: 'Helvetica Neue Light', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* CRT Scanline and Technical Grain */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 15px rgba(228, 73, 46, 0.8);
+  pointer-events: none;
+  z-index: 40;
+  animation: scan 5s linear infinite;
+}
+
+@keyframes scan {
+  0% { transform: translateY(-10vh); opacity: 0; }
+  5% { opacity: 0.8; }
+  95% { opacity: 0.8; }
+  100% { transform: translateY(105vh); opacity: 0; }
+}
+
+/* Brutalist Grid Background */
+.bg-grid-pattern {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+.bg-grid-pattern-light {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+}
+
+/* Glass Panels */
+.glass-panel {
+  background: rgba(26, 26, 26, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-panel-light {
+  background: rgba(245, 245, 247, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Brutalist Button Inversion */
+.btn-brutalist {
+  position: relative;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-brutalist:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 4px 4px 0px #E4492E;
+}
+
+.btn-brutalist:active {
+  transform: translate(0px, 0px);
+  box-shadow: 0px 0px 0px #E4492E;
 }

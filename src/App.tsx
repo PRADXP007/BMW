@@ -1,214 +1,115 @@
-import { useState, useEffect } from 'react';
-import { ChevronDown, ArrowRight, Triangle } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import Lenis from '@studio-freight/lenis';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Preloader } from './components/Preloader';
+import { Navbar } from './components/Navbar';
+import { ChassisHero } from './components/ChassisHero';
+import { ShowroomSection } from './components/ShowroomSection';
+import { ConfiguratorSection } from './components/ConfiguratorSection';
+import { StudioView360 } from './components/StudioView360';
+import { EditorialSection } from './components/EditorialSection';
+import { TypographicTransition } from './components/TypographicTransition';
+import { DeepDiveModal } from './components/DeepDiveModal';
+import { CommissionModal } from './components/CommissionModal';
+import { SpecSheetModal } from './components/SpecSheetModal';
+import { useAppStore } from './store/useAppStore';
 
-export default function App() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+gsap.registerPlugin(ScrollTrigger);
+
+export const App: React.FC = () => {
+  const { hasEntered } = useAppStore();
+  const [navTheme, setNavTheme] = useState<'dark' | 'light'>('light');
 
   useEffect(() => {
+    // 1. Smooth Momentum Physics (Lenis) with GSAP Ticker Cycle Integration
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      smoothWheel: true,
+    });
+
+    // Synchronize Lenis scroll position with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    // Root instance bound to GSAP ticker cycle (lenis.raf(time * 1000))
+    const tickerCallback = (time: number) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(tickerCallback);
+    gsap.ticker.lagSmoothing(0);
+
+    // Dynamic navbar theme switcher based on scroll position
     const handleScroll = () => {
-      if (window.scrollY > 20) {
-        setScrolled(true);
+      const hero = document.getElementById('chassis-view');
+      const configurator = document.getElementById('configurator');
+      const scrollY = window.scrollY;
+
+      const heroBottom = hero ? hero.offsetTop + hero.offsetHeight : 0;
+      const configTop = configurator ? configurator.offsetTop : 0;
+      const configBottom = configurator ? configurator.offsetTop + configurator.offsetHeight : 0;
+
+      if (scrollY < heroBottom - 80 || (scrollY >= configTop - 80 && scrollY < configBottom - 80)) {
+        setNavTheme('light');
       } else {
-        setScrolled(false);
+        setNavTheme('dark');
       }
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    return () => {
+      gsap.ticker.remove(tickerCallback);
+      lenis.destroy();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  }, [menuOpen]);
-
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false);
-
   return (
-    <div className="font-helvetica-neue bg-brand-cream text-brand-dark min-h-screen">
-      {/* 1) Navbar */}
-      <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled ? 'bg-brand-cream/90 backdrop-blur-md shadow-sm' : 'bg-transparent'
-        }`}
-      >
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="relative flex items-center h-16 md:h-20">
-            
-            {/* Desktop left links */}
-            <nav className="hidden md:flex items-center gap-8 animate-fade-down stagger-1">
-              <button
-                type="button"
-                className="flex items-center gap-1 text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity"
-              >
-                Solutions
-                <ChevronDown className="w-3.5 h-3.5" />
-              </button>
-              <a
-                href="#plans"
-                className="text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity"
-              >
-                Plans
-              </a>
-              <a
-                href="#news"
-                className="text-sm text-brand-dark tracking-wide uppercase hover:opacity-70 transition-opacity"
-              >
-                News
-              </a>
-            </nav>
+    <div className="relative bg-surface-dim text-white font-mono min-h-screen overflow-x-hidden">
+      {/* 1. Preloader Screen (Screen 8e8bdd72f9bf4960b067595bfbf270f6) with 360 Cache Preloading */}
+      <Preloader />
 
-            {/* Center logo (absolute centered) */}
-            <div className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 animate-fade-down stagger-2">
-              <Triangle className="w-5 h-5 text-brand-dark fill-brand-dark" />
-              <span className="text-xl text-brand-dark tracking-tight font-helvetica-neue">
-                Palomar
-              </span>
-            </div>
+      {/* Main Experience (Visible after entry) */}
+      {hasEntered && (
+        <>
+          {/* Top Navigation */}
+          <Navbar theme={navTheme} />
 
-            {/* Desktop CTA (right) */}
-            <a
-              href="#try"
-              className="hidden md:inline-flex items-center ml-auto px-5 py-2.5 bg-brand-dark text-white text-sm tracking-wide uppercase rounded-full hover:bg-brand-green transition-colors animate-fade-down stagger-3"
-            >
-              Try It Free
-            </a>
+          <main className="flex flex-col w-full">
+            {/* Section 02 (#chassis-view): Pinned horizontal/vertical spec sync */}
+            <ChassisHero />
 
-            {/* Mobile hamburger button */}
-            <button
-              type="button"
-              onClick={toggleMenu}
-              aria-label="Toggle menu"
-              className="md:hidden ml-auto z-50 w-10 h-10 relative flex items-center justify-center focus:outline-none"
-            >
-              <span
-                className={`w-6 h-[2px] bg-brand-dark rounded absolute transition-all duration-300 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] ${
-                  menuOpen
-                    ? 'top-[19px] rotate-45 translate-y-[5px]'
-                    : 'top-[6px]'
-                }`}
-              />
-              <span
-                className={`w-6 h-[2px] bg-brand-dark rounded absolute transition-all duration-300 ease-[cubic-bezier(0.68,-0.6,0.32,1.6)] ${
-                  menuOpen
-                    ? 'top-[19px] -rotate-45'
-                    : 'top-[13px]'
-                }`}
-              />
-            </button>
+            {/* Section 03 (#showroom): Studio Showroom & Procedural Engine Audio */}
+            <ShowroomSection />
 
-          </div>
-        </div>
-      </header>
+            {/* Section 04: Configurator & Architectural Pillars Launchpad */}
+            <ConfiguratorSection />
 
-      {/* Mobile overlay */}
-      <div
-        className={`fixed inset-0 bg-brand-cream z-40 md:hidden transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          menuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        <div
-          className={`flex flex-col items-center justify-center h-full gap-8 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] delay-100 ${
-            menuOpen ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0'
-          }`}
-        >
-          <a
-            href="#solutions"
-            onClick={closeMenu}
-            className="text-3xl text-brand-dark tracking-tight"
-          >
-            Solutions
-          </a>
-          <a
-            href="#plans"
-            onClick={closeMenu}
-            className="text-3xl text-brand-dark tracking-tight"
-          >
-            Plans
-          </a>
-          <a
-            href="#news"
-            onClick={closeMenu}
-            className="text-3xl text-brand-dark tracking-tight"
-          >
-            News
-          </a>
-          <a
-            href="#try"
-            onClick={closeMenu}
-            className="mt-4 inline-flex items-center px-8 py-3.5 bg-brand-dark text-white text-lg tracking-wide rounded-full"
-          >
-            Try It Free
-          </a>
-        </div>
-      </div>
+            {/* Section 05 (#studio-view): 360-degree canvas frame scrub mapped to ScrollTrigger */}
+            <StudioView360 />
 
-      {/* 2) Hero */}
-      <section className="relative w-full h-screen min-h-[700px] overflow-hidden bg-brand-cream">
-        
-        {/* Video layer */}
-        <div className="absolute inset-0">
-          <video
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260820_010308_b1636845-4c15-4ab6-b0c9-9a29bfb0c6e3.mp4"
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover object-bottom"
-          />
-        </div>
+            {/* Section 06 (#manifesto-view): 50/50 split screen with sticky left column & SplitType */}
+            <EditorialSection />
 
-        {/* Content column */}
-        <div className="relative z-10 flex flex-col items-start max-w-7xl mx-auto pt-28 md:pt-36 px-6 lg:px-8">
-          
-          {/* Announcement pill */}
-          <a
-            href="#announcement"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-brand-dark/15 bg-white/60 backdrop-blur-sm hover:bg-white/80 transition-colors mb-5 md:mb-6 animate-fade-up stagger-3"
-          >
-            <span className="text-sm text-brand-dark">
-              Live for everyone today! Offering $1MM in credits.
-            </span>
-            <ArrowRight className="w-3.5 h-3.5 text-brand-dark" />
-          </a>
+            {/* Section 07: Typographic Manifesto & Bottom Car Reveal */}
+            <TypographicTransition />
+          </main>
 
-          {/* Headline */}
-          <h1 className="text-left text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-brand-dark leading-[1.05] tracking-tight max-w-4xl font-helvetica-neue animate-fade-up stagger-4">
-            One unified system to build,
-            <br className="hidden sm:block" /> test, ship, and observe LLMs
-          </h1>
+          {/* Deep Dive Modals (ORIGIN, BEAUTY, ASYLUM, OBSESSION, STRENGTH) */}
+          <DeepDiveModal />
 
-          {/* 3) Trusted by (inside Hero, under headline) */}
-          <div className="w-full mt-8 md:mt-10 animate-fade-up stagger-5">
-            <p className="text-left text-xs tracking-[0.25em] uppercase text-brand-dark/50 mb-6 md:mb-8 font-helvetica-neue">
-              Backed by
-            </p>
-            <div className="flex flex-wrap items-center justify-start gap-6 md:gap-12 lg:gap-16 animate-fade-up stagger-6">
-              <span className="font-playfair text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap">
-                Meridian
-              </span>
-              <span className="font-oswald uppercase text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap">
-                STELLEX
-              </span>
-              <span className="font-montserrat text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap">
-                Luminar
-              </span>
-              <span className="font-roboto-slab uppercase text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap">
-                OVERLAND
-              </span>
-              <span className="font-raleway text-lg md:text-xl lg:text-2xl text-brand-dark/80 whitespace-nowrap">
-                Kinetic
-              </span>
-            </div>
-          </div>
+          {/* Commission Build Studio Modal */}
+          <CommissionModal />
 
-        </div>
-      </section>
+          {/* Full Engineering Specification Matrix Modal */}
+          <SpecSheetModal />
+        </>
+      )}
     </div>
   );
-}
+};
+
+export default App;
