@@ -2,15 +2,14 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { soundEngine } from '../utils/soundEngine';
 import { frameSequencer, TOTAL_360_FRAMES } from '../utils/frameSequencer';
-import { CameraAngle } from '../types';
-import { SunMedium, Moon, Sparkles } from 'lucide-react';
+import { DeepDivePillar } from '../types';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const StudioView360: React.FC = () => {
-  const { lightingMode, setLightingMode, cameraAngle, setCameraAngle } = useAppStore();
+  const { setActiveDeepDive, setIsSpecSheetOpen } = useAppStore();
   const sectionRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [currentFrame, setCurrentFrame] = useState<number>(0);
@@ -18,32 +17,20 @@ export const StudioView360: React.FC = () => {
   const startXRef = useRef<number>(0);
   const frameOffsetRef = useRef<number>(0);
 
-  const angles: { id: CameraAngle; label: string; frameIndex: number; img: string }[] = [
-    {
-      id: '01 PROFILE',
-      label: '01 PROFILE',
-      frameIndex: 0,
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBbC1q_cXA2ckKqSN2fpqanSuVjXW4o2j6Lyx5kIi2qoXXJZlKfp6Jmzf9KPCs_5QdQNEHTrMPE-hMR2kEJQUs1vwcYaJY6J-ufn6T65Pf5fQ7nXCHaL5L0DX-bS-2C850mWndeQ_0jXsKdFR-hLDPWJgc_YiU7ckNeC89kfCALOFutTv0JmRlZUvnf0Sc-zaVcYZ3dpjg5KEvQ2PfS4_UH_g3jOtoS6mfbaKMJRadx7Zo897VjXqU',
-    },
-    {
-      id: '02 TOP',
-      label: '02 TOP',
-      frameIndex: 18,
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCy1kL9MOi_H-6PY62Bzc6G2CvgwMLuEOYuWGl77URTkOefTK4-SKE9DuNwnHCjYTxm71WZaFnYanl-lK5Q74i53V6HVVXgyq9PvRvwqHHSRAm32rL6vG08bM7mGNLVpvGHodW1Wk15hL_SLP-xpanMeF2XEI3iCiy1KrhPx1IC9amJFh38CR2wsaOsl3qJmYnuy2qXdp8xxV3P0sn-6461p1pIPPRFbZRKvl4yR91v-zVOwQiM1h0',
-    },
-    {
-      id: '03 FRONT',
-      label: '03 FRONT',
-      frameIndex: 36,
-      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBFgTDx5CwV7CuEe1jS4IDq1fRESZkRjIo7Jfy_EBEqG6Hp67sLJn3lb2l8fmvsGfcO5_coWuJMiaEbmg2aOoDmFpMN2cMAlaCbbPbrMuwiM4qe5H3FG5ABEGYfZL1JQM-40oe5Qwuz6QYGjBOX8EXHB3lZtWSyNh57YEewD9mnZAw7BiSvZdSoQkt-cT_wqRWbMUmhLKEq6Pg0IRO1PMOv0XzZLfrxOYS_IJ1MrpOKuSJV4pN4oHY',
-    },
+  const pillars: { id: DeepDivePillar; label: string; subtitle: string }[] = [
+    { id: 'POWER', label: 'POWER', subtitle: '1,050 HP HYBRID CALIBRATION' },
+    { id: 'ORIGIN', label: 'ORIGIN', subtitle: '3.0 CSL BATMOBILE HERITAGE' },
+    { id: 'BEAUTY', label: 'BEAUTY', subtitle: 'DOWNFORCE & AERO FLUIDICS' },
+    { id: 'ASYLUM', label: 'ASYLUM', subtitle: 'REDUCED COCKPIT ERGONOMICS' },
+    { id: 'OBSESSION', label: 'OBSESSION', subtitle: '7075-T6 BILLET INSTRUMENTATION' },
+    { id: 'STRENGTH', label: 'STRENGTH', subtitle: 'AUTOCLAVE CARBON MONOCOQUE' },
   ];
 
   // Render to canvas via requestAnimationFrame
   const render = useCallback(() => {
     if (!canvasRef.current) return;
-    frameSequencer.renderFrameToCanvas(canvasRef.current, currentFrame, lightingMode);
-  }, [currentFrame, lightingMode]);
+    frameSequencer.renderFrameToCanvas(canvasRef.current, currentFrame, 'studio-high-key');
+  }, [currentFrame]);
 
   useEffect(() => {
     let animId: number;
@@ -55,7 +42,7 @@ export const StudioView360: React.FC = () => {
     return () => cancelAnimationFrame(animId);
   }, [render]);
 
-  // Section 04 (#studio-view): 360-degree canvas frame scrub mapped to ScrollTrigger progress 0.0 -> 1.0
+  // Screen 04: HTML5 Canvas 360-degree rotation tied to horizontal drag and scroll velocity
   useEffect(() => {
     if (!sectionRef.current) return;
 
@@ -63,7 +50,7 @@ export const StudioView360: React.FC = () => {
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: 'top top',
-        end: '+=150%',
+        end: '+=140%',
         pin: true,
         scrub: 0.5,
         onUpdate: (self) => {
@@ -76,7 +63,7 @@ export const StudioView360: React.FC = () => {
     return () => ctx.revert();
   }, []);
 
-  // Manual Drag Scrubber
+  // Horizontal Drag Interaction
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     startXRef.current = e.clientX;
@@ -85,13 +72,12 @@ export const StudioView360: React.FC = () => {
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
     const delta = e.clientX - startXRef.current;
-    if (Math.abs(delta) > 5) {
+    if (Math.abs(delta) > 4) {
       const step = delta > 0 ? 1 : -1;
       frameOffsetRef.current += step;
       setCurrentFrame((prev) => prev + step);
       startXRef.current = e.clientX;
 
-      // Spatial panning audio tick
       const pan = (e.clientX / window.innerWidth) * 2 - 1;
       soundEngine.playClick(1400, pan);
     }
@@ -101,136 +87,99 @@ export const StudioView360: React.FC = () => {
     setIsDragging(false);
   };
 
-  const handleAngleSelect = (angle: CameraAngle, frameIndex: number) => {
-    soundEngine.playClick(1200);
-    setCameraAngle(angle);
-    frameOffsetRef.current = frameIndex;
-    setCurrentFrame(frameIndex);
+  const handlePillarClick = (pillar: DeepDivePillar) => {
+    soundEngine.playClick(1100);
+    setActiveDeepDive(pillar);
   };
 
   return (
     <section
       ref={sectionRef}
-      id="studio-view"
-      className="relative w-full h-screen min-h-[750px] bg-carbon-black text-on-surface font-mono flex flex-col justify-between overflow-hidden select-none cursor-grab active:cursor-grabbing"
+      id="configurator-view"
+      className="relative w-full h-screen min-h-[750px] bg-[#EBEBEB] text-[#0D0D0D] font-mono flex flex-col justify-between overflow-hidden select-none cursor-grab active:cursor-grabbing"
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      {/* 2D Preloaded Canvas Sequencer */}
+      {/* 2D Preloaded Canvas Sequencer on Neutral Cyclorama Background */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 w-full h-full object-cover z-0"
       />
 
-      {/* Top Header & Lighting Rig Controls */}
-      <div className="relative z-20 pt-24 px-6 md:px-margin-edge flex justify-between items-start">
-        <div>
-          <div className="font-mono text-xs text-m-orange uppercase tracking-widest font-bold">
-            SECTION 04 // 360° SEQUENCER ENGINE
-          </div>
-          <h2 className="font-display text-2xl md:text-3xl uppercase text-white tracking-tight mt-1">
-            CANVAS FRAME SCRUB [{(currentFrame % TOTAL_360_FRAMES) + 1} / {TOTAL_360_FRAMES}]
-          </h2>
+      {/* Top Header Label */}
+      <div className="relative z-20 pt-24 px-6 md:px-margin-edge flex justify-between items-center">
+        <div className="font-mono text-xs uppercase tracking-widest text-[#0D0D0D]/60 font-bold">
+          SCREEN 04 // STUDIO 360 CONFIGURATOR
         </div>
-
-        {/* Lighting Mode Selector */}
-        <div className="glass-panel p-1.5 flex items-center gap-1">
-          <button
-            onClick={() => {
-              soundEngine.playClick(1000);
-              setLightingMode('amber-cyan');
-            }}
-            className={`px-3 py-1.5 font-mono text-[10px] uppercase font-bold flex items-center gap-1.5 transition-colors ${
-              lightingMode === 'amber-cyan'
-                ? 'bg-m-orange text-white'
-                : 'text-on-surface-variant hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3 h-3" />
-            <span>AMBER/CYAN</span>
-          </button>
-          <button
-            onClick={() => {
-              soundEngine.playClick(1000);
-              setLightingMode('studio-high-key');
-            }}
-            className={`px-3 py-1.5 font-mono text-[10px] uppercase font-bold flex items-center gap-1.5 transition-colors ${
-              lightingMode === 'studio-high-key'
-                ? 'bg-white text-black'
-                : 'text-on-surface-variant hover:text-white'
-            }`}
-          >
-            <SunMedium className="w-3 h-3" />
-            <span>HIGH-KEY</span>
-          </button>
-          <button
-            onClick={() => {
-              soundEngine.playClick(1000);
-              setLightingMode('carbon-void');
-            }}
-            className={`px-3 py-1.5 font-mono text-[10px] uppercase font-bold flex items-center gap-1.5 transition-colors ${
-              lightingMode === 'carbon-void'
-                ? 'bg-zinc-800 text-white'
-                : 'text-on-surface-variant hover:text-white'
-            }`}
-          >
-            <Moon className="w-3 h-3" />
-            <span>VOID</span>
-          </button>
+        <div className="font-mono text-xs uppercase tracking-widest text-[#0D0D0D]/60 hidden sm:block">
+          DRAG OR SCROLL TO SCRUB 360° TURNTABLE
         </div>
       </div>
 
-      {/* Center Drag & Scroll Indicator Tag */}
-      <div className="absolute top-[56%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
-        <div className="bg-secondary-container/90 px-6 py-2.5 rounded-full border border-secondary shadow-[0_0_25px_rgba(192,2,7,0.7)] animate-pulse flex items-center gap-2 backdrop-blur-md">
-          <span className="text-white font-mono text-xs uppercase tracking-widest font-bold">
-            &lt; SCROLL OR DRAG TO SCRUB 360° &gt;
+      {/* Main Area: Sticky Vertical Navigation Menu (Sidebar) */}
+      <div className="relative z-20 flex-grow flex justify-between items-center px-6 md:px-margin-edge pointer-events-none">
+        {/* Left Sticky Sidebar: POWER, ORIGIN, BEAUTY, ASYLUM, OBSESSION, STRENGTH */}
+        <aside className="w-full max-w-md z-20 pointer-events-auto bg-white/70 backdrop-blur-md p-6 border border-black/10 shadow-2xl">
+          <span className="font-mono text-[10px] text-[#E4492E] uppercase font-bold tracking-widest block mb-3 border-b border-[#E4492E]/20 pb-1">
+            ARCHITECTURAL PILLARS // OVERLAY LAUNCHPAD
           </span>
+          <ul className="flex flex-col gap-2.5">
+            {pillars.map((p) => (
+              <li key={p.id}>
+                <button
+                  onClick={() => handlePillarClick(p.id)}
+                  className="group flex flex-col text-left transition-all duration-150 cursor-pointer border-none bg-transparent p-0 w-full"
+                >
+                  <span className="font-display text-3xl md:text-4xl text-[#0D0D0D] uppercase font-bold tracking-tight group-hover:text-[#E4492E] group-hover:translate-x-2 transition-all duration-150">
+                    {p.label}
+                  </span>
+                  <span className="font-mono text-[10px] text-[#0D0D0D]/60 uppercase tracking-widest group-hover:text-[#0D0D0D]">
+                    // {p.subtitle}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </aside>
+
+        {/* Right Telemetry Readout */}
+        <div className="hidden lg:flex flex-col gap-4 text-right bg-white/70 backdrop-blur-md p-6 border border-black/10 shadow-xl pointer-events-auto">
+          <div className="flex flex-col">
+            <span className="font-mono text-xs text-[#0D0D0D]/60 uppercase font-bold">
+              01 // 360° FRAME
+            </span>
+            <span className="font-mono text-lg text-[#0D0D0D] font-bold mt-0.5">
+              {((currentFrame % TOTAL_360_FRAMES) + TOTAL_360_FRAMES) % TOTAL_360_FRAMES} / {TOTAL_360_FRAMES}
+            </span>
+          </div>
+
+          <div className="flex flex-col">
+            <span className="font-mono text-xs text-[#0D0D0D]/60 uppercase font-bold">
+              02 // STATUS
+            </span>
+            <span className="font-mono text-lg text-[#0D0D0D] font-bold mt-0.5 flex items-center justify-end gap-2">
+              <span className="w-2.5 h-2.5 bg-[#E4492E] rounded-full animate-pulse"></span>
+              ONLINE
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Bottom Gallery Dock (Screen 8ffa0f514f0c47b1a7060ab9dade2136) */}
-      <div className="relative z-30 px-6 md:px-margin-edge pb-8 flex flex-col sm:flex-row justify-between items-end gap-4">
-        {/* Frame index readout */}
-        <div className="glass-panel px-4 py-2 font-mono text-xs text-on-surface-variant">
-          FRAME: <span className="text-white font-bold">{((currentFrame % TOTAL_360_FRAMES) + TOTAL_360_FRAMES) % TOTAL_360_FRAMES}</span> // SCRUB: <span className="text-white font-bold">{Math.round((((currentFrame % TOTAL_360_FRAMES) + TOTAL_360_FRAMES) % TOTAL_360_FRAMES) / (TOTAL_360_FRAMES - 1) * 100)}%</span>
-        </div>
+      {/* Bottom-Left CTA: Pill Outline Button DOWNLOAD SPECS > */}
+      <div className="relative z-20 px-6 md:px-margin-edge pb-8 flex justify-between items-end">
+        <button
+          onClick={() => {
+            soundEngine.playClick(900);
+            setIsSpecSheetOpen(true);
+          }}
+          className="bg-transparent border-2 border-[#0D0D0D] text-[#0D0D0D] font-mono text-xs px-8 py-3.5 rounded-full uppercase hover:bg-[#E4492E] hover:border-[#E4492E] hover:text-white transition-all duration-150 flex items-center gap-2 cursor-pointer font-bold tracking-widest shadow-lg"
+        >
+          <span>DOWNLOAD SPECS &gt;</span>
+        </button>
 
-        {/* Camera Angle Switcher Dock */}
-        <div className="flex flex-col items-end gap-2">
-          <div className="font-mono text-[10px] text-on-surface-variant uppercase tracking-widest bg-surface-container-low px-2 py-1">
-            // CAMERA_ANGLES
-          </div>
-
-          <div className="glass-panel p-2 flex gap-3">
-            {angles.map((a) => (
-              <button
-                key={a.id}
-                onClick={() => handleAngleSelect(a.id, a.frameIndex)}
-                className={`relative w-28 md:w-36 h-16 md:h-20 overflow-hidden border transition-all duration-200 cursor-pointer ${
-                  cameraAngle === a.id
-                    ? 'border-m-orange scale-105 shadow-[0_0_15px_rgba(228,73,46,0.6)]'
-                    : 'border-surface-container-high opacity-70 hover:opacity-100 hover:border-white'
-                }`}
-              >
-                <img
-                  src={a.img}
-                  alt={a.label}
-                  className="w-full h-full object-cover"
-                />
-                <div
-                  className={`absolute bottom-0 left-0 w-full py-1 text-[10px] uppercase font-mono text-center font-bold ${
-                    cameraAngle === a.id
-                      ? 'bg-m-orange text-white'
-                      : 'bg-black/80 text-white'
-                  }`}
-                >
-                  {a.label}
-                </div>
-              </button>
-            ))}
-          </div>
+        <div className="font-mono text-[10px] text-[#0D0D0D]/60 uppercase tracking-widest hidden sm:block">
+          CLICK ANY SIDEBAR PILLAR TO OPEN DEEP-DIVE SLIDE-IN MODAL
         </div>
       </div>
     </section>

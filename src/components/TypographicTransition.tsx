@@ -1,57 +1,112 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { soundEngine } from '../utils/soundEngine';
-import { Target } from 'lucide-react';
+import { Plus } from 'lucide-react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export const TypographicTransition: React.FC = () => {
   const { setIsCommissionOpen } = useAppStore();
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const textRef = useRef<HTMLDivElement>(null);
+  const carMaskRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!sectionRef.current || !carMaskRef.current) return;
+
+    const ctx = gsap.context(() => {
+      // Parallax scroll scrub of oversized display typography & sliding supercar roofline
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 0.8,
+        },
+      });
+
+      tl.fromTo(
+        carMaskRef.current,
+        { y: 80, opacity: 0.7 },
+        { y: -40, opacity: 1, ease: 'power1.out' }
+      );
+
+      if (textRef.current) {
+        tl.fromTo(
+          textRef.current,
+          { y: 40 },
+          { y: -30, ease: 'none' },
+          0
+        );
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="relative min-h-screen w-full bg-[#E5E5E5] text-carbon-black flex flex-col items-center justify-center pt-20 pb-28 px-6 md:px-margin-edge overflow-hidden select-none">
+    <section
+      ref={sectionRef}
+      id="parallax-bridge"
+      className="relative min-h-screen w-full bg-[#E5E5E5] text-[#0D0D0D] flex flex-col items-center justify-center pt-20 pb-28 px-6 md:px-margin-edge overflow-hidden select-none"
+    >
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-grid-pattern-light opacity-30 pointer-events-none"></div>
+      <div className="absolute inset-0 bg-grid-pattern-light opacity-35 pointer-events-none"></div>
 
-      {/* Typographic Hero Canvas */}
-      <main className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center text-center font-display z-20 relative mix-blend-difference text-surface-dim">
-        <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-carbon-black uppercase">
+      {/* Screen 06 Typographic Hero Canvas: Parallax scroll scrub */}
+      <main
+        ref={textRef}
+        className="w-full max-w-7xl mx-auto flex flex-col items-center justify-center text-center font-display z-20 relative mix-blend-difference text-surface-dim"
+      >
+        <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#0D0D0D] uppercase font-bold">
           DESCEND INTO
         </h1>
-        <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-carbon-black uppercase">
+        <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#0D0D0D] uppercase font-bold">
           MADNESS
         </h1>
 
+        {/* Center Animated Red Vector Crosshair Indicator ✛ */}
         <div className="flex items-center justify-center gap-3 md:gap-6 m-0 p-0">
-          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-carbon-black uppercase">
+          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#0D0D0D] uppercase font-bold">
             WITH
           </h1>
-          <Target className="w-12 h-12 md:w-20 md:h-20 lg:w-28 lg:h-28 text-m-orange stroke-[2.5] animate-spin-slow" />
-          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-carbon-black uppercase">
+
+          <div className="relative flex items-center justify-center w-12 h-12 md:w-20 md:h-20 lg:w-28 lg:h-28">
+            <span className="text-[#E4492E] text-5xl md:text-8xl lg:text-9xl font-bold select-none leading-none animate-pulse">
+              ✛
+            </span>
+          </div>
+
+          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#0D0D0D] uppercase font-bold">
             YOUR
           </h1>
         </div>
 
         <div className="flex items-center justify-center gap-4 m-0 p-0">
-          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-carbon-black uppercase">
+          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#0D0D0D] uppercase font-bold">
             BMW
           </h1>
-          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-m-orange uppercase">
+          <h1 className="text-[12vw] md:text-[10vw] lg:text-[9vw] leading-[0.82] tracking-tighter m-0 p-0 text-[#E4492E] uppercase font-bold">
             01
           </h1>
         </div>
       </main>
 
-      {/* Car Reveal Rising from Bottom */}
+      {/* Supercar Roofline Slides Upward into View as User Scrolls */}
       <div
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 w-[85vw] max-w-5xl h-[32vh] z-10 pointer-events-none bg-contain bg-no-repeat bg-top"
+        ref={carMaskRef}
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 w-[88vw] max-w-5xl h-[34vh] z-10 pointer-events-none bg-contain bg-no-repeat bg-top"
         style={{
           backgroundImage: `url('https://lh3.googleusercontent.com/aida/AEtjO1WNw2wzi59fFbtUf0dRNO1EENsMPZPi_Jl2UB5F9aVTV6getQTEfuaSm61tFeaqdFQKtaolclBNclP2oMuTWZo-5STrK_r91pb6ajOKxJ5vW_OnIOk82IBp5vQC15KookF4HW5XssuHkLYgrfl7tYiab8iAXJdWLBf2QZW7TkAbdipSv6LMRkuXXuQpU_hnmU00rbP--4teD0gJJYg2zEHq-PJf4W9PmhBYcW-4bzNHdOaJVQBHI3tL')`,
-          maskImage: 'linear-gradient(to top, black 50%, transparent 100%)',
-          WebkitMaskImage: 'linear-gradient(to top, black 50%, transparent 100%)',
+          maskImage: 'linear-gradient(to top, black 55%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to top, black 55%, transparent 100%)',
         }}
       ></div>
 
       {/* Fixed Bottom Commission Drawer Bar */}
-      <div className="fixed bottom-0 left-0 w-full bg-m-orange h-16 md:h-20 flex items-center justify-between px-6 md:px-margin-edge z-40 shadow-2xl border-t border-white/20">
+      <div className="fixed bottom-0 left-0 w-full bg-[#E4492E] h-16 md:h-20 flex items-center justify-between px-6 md:px-margin-edge z-40 shadow-2xl border-t border-white/20">
         <span className="font-mono text-xs md:text-sm text-white uppercase tracking-widest font-bold">
           COMMISSION YOUR M-PROJECT // 01
         </span>
@@ -60,11 +115,9 @@ export const TypographicTransition: React.FC = () => {
             soundEngine.playPneumatic();
             setIsCommissionOpen(true);
           }}
-          className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-carbon-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer border-none shadow-lg group"
+          className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-[#0D0D0D] flex items-center justify-center hover:scale-105 active:scale-95 transition-transform cursor-pointer border-none shadow-lg group"
         >
-          <span className="material-symbols-outlined text-2xl group-hover:rotate-90 transition-transform duration-300">
-            add
-          </span>
+          <Plus className="w-6 h-6 text-[#0D0D0D] group-hover:rotate-90 transition-transform duration-300" />
         </button>
       </div>
     </section>
