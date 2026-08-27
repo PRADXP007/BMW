@@ -28,8 +28,18 @@
          PRELOADER — Section 01
     ═══════════════════════════════════════════════════════ -->
     <div id="preloader" class="noise-overlay scanlines" aria-live="polite">
+
       <!-- Curtain that wipes up on exit -->
       <div id="preloader-curtain"></div>
+
+      <!-- §4.1 Background loop video -->
+      <video
+        id="preloader-video"
+        src="/BMW/assets/video/preloader-loop.mp4"
+        autoplay muted loop playsinline
+        aria-hidden="true"
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.18;pointer-events:none;z-index:0;"
+      ></video>
 
       <!-- Scan line animating top bar -->
       <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#E4492E;transform-origin:left;z-index:3;"
@@ -145,7 +155,7 @@
       <div style="grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:center;position:relative;z-index:5;">
         <img
           class="chassis-car animate-float"
-          src="/BMW/assets/images/hero-suspended.jpg"
+          src="/BMW/assets/images/hero-suspended.png"
           alt="BMW M4 G82 Competition — suspended in studio, rear three-quarter view, Isle of Man Green"
           style="width:min(720px,82vw);object-fit:contain;opacity:0;filter:drop-shadow(0 80px 100px rgba(0,0,0,0.18)) drop-shadow(0 24px 48px rgba(0,0,0,0.1));"
           loading="eager"
@@ -237,9 +247,9 @@
         <!-- Engine visual -->
         <div style="position:relative;aspect-ratio:1;background:linear-gradient(135deg,#1A1A1A,#0A0A0A);display:flex;align-items:center;justify-content:center;overflow:hidden;">
           <img
-            src="/BMW/assets/images/engine-bay.jpg"
+            src="/BMW/assets/images/detail-power.jpg"
             alt="BMW M4 S58 engine bay — hand-assembled twin-turbo inline-six"
-            style="width:100%;height:100%;object-fit:cover;opacity:0.85;"
+            style="width:100%;height:100%;object-fit:cover;opacity:0.9;"
             loading="lazy"
           />
           <!-- Grid overlay -->
@@ -476,9 +486,8 @@
           <!-- Material 1 -->
           <div class="material-item" style="background:#0D0D0D;border:1px solid rgba(255,255,255,0.06);overflow:hidden;cursor:none;">
             <div style="aspect-ratio:4/3;overflow:hidden;">
-              <img class="material-img" src="/BMW/assets/images/damper-macro.jpg"
-                alt="BMW M4 damper unit — macro close-up of forged aluminium suspension" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy"
-                onerror="this.style.background='#1A1A1A';this.style.display='block';this.alt='';" />
+              <img class="material-img" src="/BMW/assets/images/detail-precision.jpg"
+                alt="BMW M4 damper unit — macro close-up, forged aluminium precision" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" />
             </div>
             <div style="padding:28px 24px;">
               <p class="text-mono-xs" style="color:#E4492E;margin-bottom:8px;">CARBON FIBRE</p>
@@ -490,7 +499,7 @@
           <!-- Material 2 -->
           <div class="material-item" style="background:#0D0D0D;border:1px solid rgba(255,255,255,0.06);overflow:hidden;cursor:none;">
             <div style="aspect-ratio:4/3;overflow:hidden;">
-              <img class="material-img" src="/BMW/assets/images/interior-wheel.jpg" alt="BMW M4 interior — M multifunction steering wheel with Merino leather" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" />
+              <img class="material-img" src="/BMW/assets/images/detail-cockpit.jpg" alt="BMW M4 cockpit — M multifunction steering wheel, Merino leather, M Sport seats" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" />
             </div>
             <div style="padding:28px 24px;">
               <p class="text-mono-xs" style="color:#E4492E;margin-bottom:8px;">MERINO LEATHER</p>
@@ -502,7 +511,7 @@
           <!-- Material 3 -->
           <div class="material-item" style="background:#0D0D0D;border:1px solid rgba(255,255,255,0.06);overflow:hidden;cursor:none;">
             <div style="aspect-ratio:4/3;overflow:hidden;">
-              <img class="material-img" src="/BMW/assets/images/chassis-axle.jpg" alt="BMW M4 carbon chassis — front axle and subframe detail" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" />
+              <img class="material-img" src="/BMW/assets/images/detail-chassis.jpg" alt="BMW M4 chassis — front axle, carbon subframe, suspension geometry" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" />
             </div>
             <div style="padding:28px 24px;">
               <p class="text-mono-xs" style="color:#E4492E;margin-bottom:8px;">FORGED ALUMINIUM</p>
@@ -611,6 +620,59 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════════════
+         SECTION 04b — CHAPTER NAVIGATOR (§4.4)
+    ═══════════════════════════════════════════════════════ -->
+    <section id="chapter-nav" style="background:#111;color:#E8E8E6;" aria-label="Chapter navigator">
+      <div style="display:grid;grid-template-columns:1fr 1fr;min-height:70vh;">
+        <div style="position:relative;overflow:hidden;background:#0A0A0A;">
+          <img id="chapter-img-default" src="/BMW/assets/images/chapter-rear-view.jpg" alt="BMW M4 G82 — rear three-quarter view" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:opacity 0.6s;transform:scale(1.03);" loading="lazy"/>
+          <img id="chapter-img-alt" src="/BMW/assets/images/chapter-front-3q.jpg" alt="BMW M4 G82 — front three-quarter view" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:opacity 0.6s;opacity:0;" loading="lazy"/>
+          <div style="position:absolute;top:24px;left:24px;width:20px;height:20px;border-top:1px solid #E4492E;border-left:1px solid #E4492E;z-index:5;"></div>
+          <div style="position:absolute;bottom:24px;right:24px;width:20px;height:20px;border-bottom:1px solid #E4492E;border-right:1px solid #E4492E;z-index:5;"></div>
+          <div style="position:absolute;bottom:24px;left:24px;z-index:5;"><p class="text-mono-xs" id="chapter-img-label" style="color:rgba(255,255,255,0.5);background:rgba(0,0,0,0.6);padding:4px 10px;">REAR THREE-QUARTER — G82</p></div>
+        </div>
+        <div style="padding:80px 60px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid rgba(255,255,255,0.06);">
+          <p class="text-mono-xs" style="color:#E4492E;margin-bottom:32px;">004b — CHAPTERS</p>
+          <div style="padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;cursor:none;transition:padding-left 0.3s;" onmouseover="document.getElementById('chapter-img-default').style.opacity='1';document.getElementById('chapter-img-alt').style.opacity='0';document.getElementById('chapter-img-label').textContent='REAR THREE-QUARTER — G82';this.style.paddingLeft='12px';" onmouseout="this.style.paddingLeft='0';">
+            <div><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">01</p><p style="font-family:'Anton',sans-serif;font-size:1.8rem;letter-spacing:-0.02em;text-transform:uppercase;">SUSPENDED</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">STUDIO SHOOT — ISLE OF MAN GREEN</p></div>
+            <svg width="24" height="24" fill="none" stroke="#E4492E" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div style="padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;cursor:none;transition:padding-left 0.3s;" onmouseover="document.getElementById('chapter-img-default').style.opacity='0';document.getElementById('chapter-img-alt').style.opacity='1';document.getElementById('chapter-img-label').textContent='FRONT THREE-QUARTER — G82';this.style.paddingLeft='12px';" onmouseout="this.style.paddingLeft='0';">
+            <div><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">02</p><p style="font-family:'Anton',sans-serif;font-size:1.8rem;letter-spacing:-0.02em;text-transform:uppercase;">APPROACH</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">FRONT THREE-QUARTER PROFILE</p></div>
+            <svg width="24" height="24" fill="none" stroke="#E4492E" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div style="padding:24px 0;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;cursor:none;transition:padding-left 0.3s;" onmouseover="this.style.paddingLeft='12px';" onmouseout="this.style.paddingLeft='0';">
+            <div><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">03</p><p style="font-family:'Anton',sans-serif;font-size:1.8rem;letter-spacing:-0.02em;text-transform:uppercase;">INTERIOR</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">COCKPIT — MERINO &amp; CARBON</p></div>
+            <svg width="24" height="24" fill="none" stroke="#E4492E" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+          <div style="padding:24px 0;display:flex;justify-content:space-between;align-items:center;cursor:none;transition:padding-left 0.3s;" onmouseover="this.style.paddingLeft='12px';" onmouseout="this.style.paddingLeft='0';">
+            <div><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">04</p><p style="font-family:'Anton',sans-serif;font-size:1.8rem;letter-spacing:-0.02em;text-transform:uppercase;">POWERTRAIN</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">S58 — HAND-ASSEMBLED IN MUNICH</p></div>
+            <svg width="24" height="24" fill="none" stroke="#E4492E" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 05b — DETAIL PAGES (§4.5)
+    ═══════════════════════════════════════════════════════ -->
+    <section id="detail-pages" style="background:#0D0D0D;padding:100px 80px;" aria-label="M4 detail chapters">
+      <div style="max-width:1400px;margin:0 auto;">
+        <p class="text-mono-xs" style="color:#E4492E;margin-bottom:12px;">005b — DETAIL PAGES</p>
+        <h2 style="font-family:'Anton',sans-serif;font-size:clamp(2.5rem,5vw,6rem);line-height:0.9;letter-spacing:-0.025em;text-transform:uppercase;color:#E8E8E6;margin-bottom:64px;">SIX<br>CHAPTERS.</h2>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:rgba(255,255,255,0.04);">
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-power.jpg" alt="POWER" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">01 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">POWER</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">503 HP — S58 TWIN-TURBO</p></div></div>
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-heritage.jpg" alt="HERITAGE" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">02 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">HERITAGE</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">M3 + M4 — 40 YEARS OF M</p></div></div>
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-design.jpg" alt="DESIGN" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">03 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">DESIGN</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">ICONIC KIDNEY — AGGRESSIVE OPTICS</p></div></div>
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-cockpit.jpg" alt="COCKPIT" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">04 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">COCKPIT</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">MERINO LEATHER — 12.3&quot; CLUSTER</p></div></div>
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-precision.jpg" alt="PRECISION" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">05 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">PRECISION</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">ADAPTIVE DAMPERS — 10MS INTERVALS</p></div></div>
+          <div style="background:#0D0D0D;overflow:hidden;cursor:none;" onmouseover="this.querySelector('img').style.transform='scale(1.06)'" onmouseout="this.querySelector('img').style.transform='scale(1)'"><div style="aspect-ratio:3/4;overflow:hidden;"><img src="/BMW/assets/images/detail-chassis.jpg" alt="CHASSIS" style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;" loading="lazy"/></div><div style="padding:24px 20px;border-top:1px solid rgba(255,255,255,0.06);"><p class="text-mono-xs" style="color:#E4492E;margin-bottom:6px;">06 / 06</p><p style="font-family:'Anton',sans-serif;font-size:1.4rem;text-transform:uppercase;color:#E8E8E6;">CHASSIS</p><p class="text-mono-xs" style="color:#5A5A58;margin-top:4px;">CFRP — FORGED ALUMINIUM SUBFRAMES</p></div></div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
          SECTION 08 — PERFORMANCE GALLERY
     ═══════════════════════════════════════════════════════ -->
     <section style="background:#0A0A0A;padding:100px 0;" aria-label="Performance gallery">
@@ -623,24 +685,24 @@
         <!-- Large image -->
         <div style="position:relative;aspect-ratio:16/9;overflow:hidden;background:#1A1A1A;">
           <img
-            src="/BMW/assets/images/m4-drift-2k.jpg"
-            alt="BMW M4 Competition — mid-drift at speed, on-track action"
+            src="/BMW/assets/images/hero-suspended.png"
+            alt="BMW M4 G82 Competition — suspended in studio, Isle of Man Green"
             style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s var(--ease-expo);"
             loading="lazy"
             onmouseover="this.style.transform='scale(1.04)'"
             onmouseout="this.style.transform='scale(1)'"
           />
           <div style="position:absolute;bottom:24px;left:24px;background:rgba(0,0,0,0.7);padding:8px 16px;">
-            <p class="text-mono-xs" style="color:#E8E8E6;">NÜRBURGRING NORDSCHLEIFE — 7:38.92</p>
+            <p class="text-mono-xs" style="color:#E8E8E6;">STUDIO MONOCOQUE SUSPENSION — ISLE OF MAN GREEN</p>
           </div>
         </div>
         <!-- Stacked right -->
         <div style="display:flex;flex-direction:column;gap:2px;">
           <div style="position:relative;flex:1;overflow:hidden;background:#1A1A1A;min-height:200px;">
             <img
-              src="/BMW/assets/images/hero-suspended.jpg"
-              alt="BMW M4 G82 — suspended in studio, rear three-quarter"
-              style="width:100%;height:100%;object-fit:cover;object-position:center 30%;transition:transform 0.8s;"
+              src="/BMW/assets/images/chapter-rear-view.jpg"
+              alt="BMW M4 G82 — rear three-quarter studio view"
+              style="width:100%;height:100%;object-fit:cover;object-position:center 40%;transition:transform 0.8s;"
               loading="lazy"
               onmouseover="this.style.transform='scale(1.06)'"
               onmouseout="this.style.transform='scale(1)'"
@@ -648,7 +710,7 @@
           </div>
           <div style="position:relative;flex:1;background:#111;overflow:hidden;min-height:200px;">
             <img
-              src="/BMW/assets/images/m4-front.jpg"
+              src="/BMW/assets/images/chapter-front-3q.jpg"
               alt="BMW M4 G82 — front three-quarter studio view"
               style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;"
               loading="lazy"
@@ -663,6 +725,80 @@
         </div>
       </div>
     </section>
+
+
+    <!-- ═══════════════════════════════════════════════════════
+         SECTION 07b — ABOUT (§4.7)
+    ═══════════════════════════════════════════════════════ -->
+    <section id="about-view" style="background:#EBEBEB;color:#0D0D0D;padding:120px 80px;" aria-label="About the M4 project">
+      <div style="max-width:1400px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;">
+
+        <!-- Left: engineer portrait -->
+        <div>
+          <div style="position:relative;overflow:hidden;aspect-ratio:3/4;margin-bottom:24px;">
+            <img src="/BMW/assets/images/about-engineer-portrait.jpg"
+              alt="Motorsport engineer on track — BMW M development"
+              style="width:100%;height:100%;object-fit:cover;transition:transform 0.8s;"
+              loading="lazy"
+              onmouseover="this.style.transform='scale(1.04)'"
+              onmouseout="this.style.transform='scale(1)'"
+            />
+            <div style="position:absolute;top:0;left:0;right:0;height:2px;background:#E4492E;"></div>
+          </div>
+          <p class="text-mono-xs" style="color:#8A8A88;">MOTORSPORT ENGINEER — NÜRBURGRING TEST DAYS</p>
+        </div>
+
+        <!-- Right: editorial + tabbed collage -->
+        <div>
+          <p class="text-mono-xs" style="color:#E4492E;margin-bottom:16px;">007b — ABOUT</p>
+          <h2 style="font-family:'Anton',sans-serif;font-size:clamp(2.5rem,5vw,5.5rem);line-height:0.9;letter-spacing:-0.025em;text-transform:uppercase;color:#0D0D0D;margin-bottom:32px;">BUILT BY<br>OBSESSIVES.<br><span style="color:#E4492E;">FOR THE<br>SAME.</span></h2>
+          <p style="font-size:0.875rem;line-height:1.85;color:#5A5A58;max-width:480px;margin-bottom:48px;">Every M4 is developed by engineers who drive the Nordschleife before breakfast. Every specification exists because it makes the car faster, sharper, or more precise — never for marketing. This is the result.</p>
+
+          <!-- Tab buttons -->
+          <div style="display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid rgba(0,0,0,0.1);">
+            <button onclick="switchAboutTab(0)" id="tab-0" class="text-mono-xs" style="padding:12px 24px;background:none;border:none;border-bottom:2px solid #E4492E;color:#0D0D0D;cursor:none;letter-spacing:0.12em;">ENGINEERS</button>
+            <button onclick="switchAboutTab(1)" id="tab-1" class="text-mono-xs" style="padding:12px 24px;background:none;border:none;border-bottom:2px solid transparent;color:#8A8A88;cursor:none;letter-spacing:0.12em;">MISSION</button>
+            <button onclick="switchAboutTab(2)" id="tab-2" class="text-mono-xs" style="padding:12px 24px;background:none;border:none;border-bottom:2px solid transparent;color:#8A8A88;cursor:none;letter-spacing:0.12em;">MACHINE</button>
+          </div>
+
+          <!-- Tab panels -->
+          <div id="about-panel-0" style="display:block;">
+            <div style="aspect-ratio:16/9;overflow:hidden;margin-bottom:16px;">
+              <img src="/BMW/assets/images/about-collage-1.jpg" alt="BMW race car in pit — engineers at work" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"/>
+            </div>
+            <p style="font-size:0.8rem;line-height:1.7;color:#5A5A58;">The M team consists of fewer than 500 people. Every one of them holds a driving licence for the Nordschleife.</p>
+          </div>
+
+          <div id="about-panel-1" style="display:none;">
+            <div style="aspect-ratio:16/9;overflow:hidden;margin-bottom:16px;">
+              <img src="/BMW/assets/images/about-collage-2.jpg" alt="BMW M4 mid-drift — mission on track" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"/>
+            </div>
+            <p style="font-size:0.8rem;line-height:1.7;color:#5A5A58;">The mission has never changed: build the fastest, most capable driver's car on the market. Everything else is secondary.</p>
+          </div>
+
+          <div id="about-panel-2" style="display:none;">
+            <div style="aspect-ratio:16/9;overflow:hidden;margin-bottom:16px;">
+              <img src="/BMW/assets/images/about-collage-3.jpg" alt="BMW touring car racing trackside — the machine" style="width:100%;height:100%;object-fit:cover;transition:transform 0.6s;" loading="lazy" onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'"/>
+            </div>
+            <p style="font-size:0.8rem;line-height:1.7;color:#5A5A58;">The G82 M4 shares its DNA with the M4 GT3 — the same philosophy of weight reduction, aero balance, and powertrain precision.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script>
+    function switchAboutTab(i) {
+      [0,1,2].forEach(function(n) {
+        var panel = document.getElementById('about-panel-' + n);
+        var tab = document.getElementById('tab-' + n);
+        if (panel) panel.style.display = (n === i) ? 'block' : 'none';
+        if (tab) {
+          tab.style.borderBottomColor = (n === i) ? '#E4492E' : 'transparent';
+          tab.style.color = (n === i) ? '#0D0D0D' : '#8A8A88';
+        }
+      });
+    }
+    </script>
 
     <!-- ═══════════════════════════════════════════════════════
          SECTION 09 — COMMISSION CTA
