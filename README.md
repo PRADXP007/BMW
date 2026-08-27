@@ -87,29 +87,26 @@ subOsc.type = 'sine';         // sub at 40Hz
 
 ---
 
-## ◆ Asset Map
+## ◆ Asset Map & File Mapping
 
-```
-public/assets/images/
-├── hero-suspended.jpg       ← §02 chassis hero centerpiece + §08 gallery angle 2
-├── door-open-reveal.jpg     ← §03b full-bleed interior reveal scene
-├── engine-bay.jpg           ← §03 engine deep-dive photograph
-├── m4-drift-2k.jpg          ← §08 gallery — main large panel
-├── m4-front.jpg             ← §08 gallery — front ¾ angle
-├── m4-rear.jpg              ← available
-├── m4-grille.jpg            ← available
-├── m4-door-open.jpg         ← source copy of door-open-reveal
-├── interior-wheel.jpg       ← §06 materials — Merino leather card
-├── interior-wheel-2.jpg     ← available
-├── damper-macro.jpg         ← §06 materials — carbon fibre card
-├── chassis-axle.jpg         ← §06 materials — forged aluminium card
-├── m3-m4-race.jpg           ← available
-├── m4-pit.jpg               ← available
-└── m4-trackside.jpg         ← available
-
-public/assets/video/
-└── m4-drift.mp4             ← available for future hero bg (git-ignored, local only)
-```
+| Original File (Finder/downloads/BMW IMGS) | Canonical Project Path | Role / Used In |
+|---|---|---|
+| `BMW_M4_suspended_in_studio_202608271155.jpeg` | `assets/images/hero-suspended.png` | Hero centerpiece (§4.2) + Gallery angle 1 (§4.6) |
+| `BMW_M4_with_open_door_202608271156.jpeg` | `assets/images/door-open-reveal.jpg` | Door-open reveal scene (§4.3) |
+| `BMW_M4_drifting_on_track_202608271156.mp4` | `assets/video/preloader-loop.mp4` | Preloader background video (§4.1) |
+| `BMW_M4_G82_rear_view_202608271156.jpeg` | `assets/images/chapter-rear-view.jpg` | Chapter navigator default (§4.4) + Gallery angle 2 (§4.6) |
+| `BMW_M4_G82_front_view_202608271156.jpeg` | `assets/images/chapter-front-3q.jpg` | Chapter navigator alternate (§4.4) + Gallery angle 3 (§4.6) |
+| `BMW_M4_engine_bay_displayed_202608271156.jpeg` | `assets/images/detail-power.jpg` | POWER detail chapter (§4.5) |
+| `BMW_M3_and_M4_racing_202608271156.jpeg` | `assets/images/detail-heritage.jpg` | HERITAGE detail chapter (§4.5) — archival composite |
+| `BMW_M4_grille_and_headlight_202608271156.jpeg` | `assets/images/detail-design.jpg` | DESIGN detail chapter (§4.5) |
+| `BMW_M4_interior_steering_wheel_202608271156.jpeg` | `assets/images/detail-cockpit.jpg` | COCKPIT detail chapter (§4.5) |
+| `BMW_damper_unit_macro_shot_202608271156.jpeg` | `assets/images/detail-precision.jpg` | PRECISION detail chapter (§4.5) |
+| `Car_chassis_showing_front_axle_202608271156.jpeg` | `assets/images/detail-chassis.jpg` | CHASSIS detail chapter (§4.5) |
+| `Motorsport_engineer_walking_on_t..._202608271157.jpeg` | `assets/images/about-engineer-portrait.jpg` | About page, engineer portrait (§4.7) |
+| `BMW_race_car_in_pit_202608271157.jpeg` | `assets/images/about-collage-1.jpg` | About page, ENGINEERS tab supporting image (§4.7) |
+| `BMW_racing_sedan_mid-drift_2K_202608271157.jpeg` | `assets/images/about-collage-2.jpg` | About page, MISSION tab supporting image (§4.7) |
+| `BMW_touring_car_racing_trackside_202608271157.jpeg` | `assets/images/about-collage-3.jpg` | About page, MACHINE tab supporting image (§4.7) |
+| `BMW_M4_interior_steering_wheel_202608271156-2.jpeg` | `assets/images/detail-cockpit-alt.jpg` | Secondary cockpit detail asset (§4.5) |
 
 ---
 
