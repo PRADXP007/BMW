@@ -1,110 +1,551 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── CSS Custom Properties ─────────────────────────────────────────── */
 :root {
-  --color-m-orange: #E4492E;
-  --color-carbon-black: #0D0D0D;
-  --color-cyclorama-gray: #EBEBEB;
-  --color-panel-white: #F5F5F7;
-  --color-border-subtle: #D4D4D8;
-  --font-display: "Anton", "PP Neue Montreal", "Neue Haas Grotesk Display Pro", -apple-system, sans-serif;
-  --font-mono: "Courier Prime", "Geist Mono", "Space Mono", monospace;
-  --font-italic-spec: "Courier Prime", "Editorial New Italic", "Druk Wide Italic", monospace;
+  --m-orange: #E4492E;
+  --m-orange-dim: rgba(228, 73, 46, 0.15);
+  --carbon: #0D0D0D;
+  --cyclorama: #EBEBEB;
+  --off-white: #F0EDE8;
+  --wire: #1A1A1A;
+  --border: rgba(255,255,255,0.08);
+  --border-dark: rgba(0,0,0,0.12);
+  --text-primary: #E8E8E6;
+  --text-dim: #8A8A88;
+  --text-ultra: #5A5A58;
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Material Symbols configuration */
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-.material-symbols-outlined.fill-icon {
-  font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-/* Zero Radii Brutalist Defaults */
-* {
+/* ─── Reset & Base ──────────────────────────────────────────────────── */
+*, *::before, *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Custom Scrollbars */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-track {
-  background: #0D0D0D;
-}
-::-webkit-scrollbar-thumb {
-  background: #353535;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #E4492E;
+html {
+  font-size: 16px;
+  scroll-behavior: auto; /* Lenis handles this */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
-/* CRT Scanline and Technical Grain */
-.scanline {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 15px rgba(228, 73, 46, 0.8);
+body {
+  background: var(--carbon);
+  color: var(--text-primary);
+  font-family: 'Courier Prime', 'Space Mono', monospace;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ─── Custom Cursor ─────────────────────────────────────────────────── */
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: var(--m-orange);
+  border-radius: 50%;
   pointer-events: none;
-  z-index: 40;
-  animation: scan 5s linear infinite;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background 0.2s;
+  mix-blend-mode: normal;
 }
 
-@keyframes scan {
-  0% { transform: translateY(-10vh); opacity: 0; }
-  5% { opacity: 0.8; }
-  95% { opacity: 0.8; }
-  100% { transform: translateY(105vh); opacity: 0; }
+#cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 36px; height: 36px;
+  border: 1px solid rgba(228, 73, 46, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-expo), height 0.3s var(--ease-expo), border-color 0.3s;
 }
 
-/* Brutalist Grid Background */
-.bg-grid-pattern {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 56px; height: 56px;
+  border-color: var(--m-orange);
 }
 
-.bg-grid-pattern-light {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.06) 1px, transparent 1px);
+/* ─── Typography ─────────────────────────────────────────────────────── */
+.font-display { font-family: 'Anton', sans-serif; }
+
+.text-hero {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(4rem, 12vw, 14rem);
+  line-height: 0.88;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
 }
 
-/* Glass Panels */
-.glass-panel {
-  background: rgba(26, 26, 26, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+.text-display {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 6vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
 }
 
-.glass-panel-light {
-  background: rgba(245, 245, 247, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+.text-mono-xs {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
 }
 
-/* Brutalist Button Inversion */
-.btn-brutalist {
+.text-mono-sm {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.text-mono-md {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+}
+
+/* ─── SplitType Line Mask ────────────────────────────────────────────── */
+.split-line {
+  overflow: hidden;
+  display: block;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 2px; }
+::-webkit-scrollbar-track { background: var(--carbon); }
+::-webkit-scrollbar-thumb { background: var(--m-orange); }
+
+/* ─── Selection ──────────────────────────────────────────────────────── */
+::selection {
+  background: var(--m-orange);
+  color: white;
+}
+
+/* ─── Global Sections ────────────────────────────────────────────────── */
+section {
   position: relative;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  width: 100%;
 }
 
-.btn-brutalist:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 4px 4px 0px #E4492E;
+/* ─── Noise Texture Overlay ──────────────────────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
 }
 
-.btn-brutalist:active {
-  transform: translate(0px, 0px);
-  box-shadow: 0px 0px 0px #E4492E;
+/* ─── Scan Line Effect ───────────────────────────────────────────────── */
+.scanlines::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,0.03) 2px,
+    rgba(0,0,0,0.03) 4px
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ─── Preloader ──────────────────────────────────────────────────────── */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--carbon);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 48px;
+  overflow: hidden;
+}
+
+#preloader .hero-word {
+  display: block;
+  overflow: hidden;
+  line-height: 0.85;
+}
+
+#preloader .hero-word span {
+  display: block;
+  transform: translateY(110%);
+  will-change: transform;
+}
+
+#preloader .progress-bar-track {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+#preloader .progress-bar-fill {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: var(--m-orange);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+#preloader-curtain {
+  position: absolute;
+  inset: 0;
+  background: var(--carbon);
+  transform-origin: top;
+  z-index: 2;
+}
+
+/* ─── Navigation ─────────────────────────────────────────────────────── */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  mix-blend-mode: normal;
+  transition: background 0.4s;
+}
+
+#navbar.scrolled {
+  background: rgba(13,13,13,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* ─── Chassis Hero Section ───────────────────────────────────────────── */
+#chassis-view {
+  height: 100vh;
+  min-height: 700px;
+  background: var(--cyclorama);
+  color: var(--carbon);
+  display: grid;
+  grid-template-columns: 80px 1fr 80px;
+  grid-template-rows: 80px 1fr 80px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Studio / 360 View ──────────────────────────────────────────────── */
+#studio-view {
+  background: #0A0A0A;
+  min-height: 400vh;
+  position: relative;
+}
+
+#studio-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* ─── Showroom / Configurator ────────────────────────────────────────── */
+#configurator-view {
+  background: var(--cyclorama);
+  min-height: 100vh;
+  color: var(--carbon);
+}
+
+/* ─── Manifesto / Split Screen ───────────────────────────────────────── */
+#manifesto-view {
+  min-height: 200vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+#manifesto-left {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 80px 60px;
+  background: var(--carbon);
+  border-right: 1px solid var(--border);
+}
+
+#manifesto-right {
+  padding: 120px 60px;
+  background: var(--off-white);
+  color: var(--carbon);
+}
+
+/* ─── Commission CTA ─────────────────────────────────────────────────── */
+#commission-view {
+  min-height: 100vh;
+  background: var(--m-orange);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ─── Engine Sound Button ────────────────────────────────────────────── */
+#sound-btn {
+  position: fixed;
+  bottom: 36px;
+  left: 48px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  background: rgba(13,13,13,0.8);
+  backdrop-filter: blur(8px);
+  color: var(--text-dim);
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: none;
+  transition: border-color 0.3s, color 0.3s;
+  border-radius: 2px;
+}
+
+#sound-btn:hover {
+  border-color: var(--m-orange);
+  color: var(--m-orange);
+}
+
+#sound-btn .sound-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--text-ultra);
+  transition: background 0.3s;
+}
+
+#sound-btn.active .sound-dot {
+  background: var(--m-orange);
+  box-shadow: 0 0 8px var(--m-orange);
+  animation: pulse-dot 1s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.7; }
+}
+
+/* ─── Telemetry Table ─────────────────────────────────────────────────── */
+.telemetry-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border-dark);
+}
+
+.telemetry-cell {
+  background: var(--cyclorama);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.telemetry-value {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-style: italic;
+  color: var(--carbon);
+}
+
+.telemetry-label {
+  font-family: 'Courier Prime', monospace;
+  font-size: 0.625rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #888;
+}
+
+/* ─── Spec Cards ──────────────────────────────────────────────────────── */
+.spec-card {
+  border: 1px solid var(--border);
+  padding: 28px;
+  position: relative;
+  transition: border-color 0.3s, transform 0.3s var(--ease-expo);
+}
+
+.spec-card:hover {
+  border-color: var(--m-orange);
+  transform: translateY(-4px);
+}
+
+.spec-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 0%;
+  height: 1px;
+  background: var(--m-orange);
+  transition: width 0.4s var(--ease-expo);
+}
+
+.spec-card:hover::before { width: 100%; }
+
+/* ─── Configurator Swatches ──────────────────────────────────────────── */
+.color-swatch {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: none;
+  border: 2px solid transparent;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.color-swatch:hover,
+.color-swatch.active {
+  border-color: var(--m-orange);
+  transform: scale(1.15);
+}
+
+/* ─── 360 Canvas ──────────────────────────────────────────────────────── */
+#canvas-360 {
+  max-width: 90vw;
+  max-height: 80vh;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.drag-hint {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.drag-hint.visible { opacity: 1; }
+
+/* ─── Marquee / Ticker ────────────────────────────────────────────────── */
+.marquee-track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track:hover { animation-play-state: paused; }
+
+/* ─── Horizontal Rule Decoration ─────────────────────────────────────── */
+.rule-deco {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.rule-deco::before,
+.rule-deco::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.15;
+}
+
+/* ─── Bottom Drawer ───────────────────────────────────────────────────── */
+#bottom-drawer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 150;
+  height: 56px;
+  background: var(--m-orange);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  transform: translateY(100%);
+  transition: transform 0.5s var(--ease-expo);
+}
+
+#bottom-drawer.visible { transform: translateY(0); }
+
+/* ─── Animations ──────────────────────────────────────────────────────── */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-float { animation: float 6s ease-in-out infinite; }
+.animate-spin-slow { animation: spin-slow 12s linear infinite; }
+
+/* ─── Utility ─────────────────────────────────────────────────────────── */
+.clip-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.will-change-transform { will-change: transform; }
+
+.border-b-subtle {
+  border-bottom: 1px solid var(--border);
+}
+
+.border-b-subtle-dark {
+  border-bottom: 1px solid var(--border-dark);
+}
+
+/* ─── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  #preloader { padding: 24px; }
+  #navbar { padding: 16px 24px; }
+  #manifesto-view { grid-template-columns: 1fr; }
+  #manifesto-left { position: relative; height: auto; }
+  #commission-view { padding: 60px 24px; }
+  #sound-btn { left: 24px; bottom: 24px; }
+  #bottom-drawer { padding: 0 24px; }
+
+  .telemetry-grid { grid-template-columns: 1fr; }
 }
