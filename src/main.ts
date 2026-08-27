@@ -9,6 +9,7 @@ import { initConfigurator } from './modules/configurator';
 import { initMaterialsSection } from './modules/materials';
 import { initManifestoSection } from './modules/manifesto';
 import { initCommissionSection } from './modules/commission';
+import { initDoorReveal } from './modules/doorReveal';
 import { initSoundEngine } from './modules/sound.init';
 import { initBottomDrawer } from './modules/bottomDrawer';
 import { initMarquee } from './modules/marquee';
@@ -28,6 +29,7 @@ async function boot() {
   const lenis = initLenis();
 
   initChassisSection(lenis);
+  initDoorReveal();
   initStudio360(lenis);
   initConfigurator();
   initMaterialsSection();
